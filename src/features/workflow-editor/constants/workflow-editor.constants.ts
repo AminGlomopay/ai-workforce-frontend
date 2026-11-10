@@ -30,6 +30,8 @@ export const OPERATION_PROPERTY_NAME = 'operation';
 
 export const SAVED_TOAST_DURATION = 4500;
 
+export const RUN_BAR_AUTO_HIDE_DELAY = 5000;
+
 export const EXECUTION_POLL_INTERVAL = 1000;
 
 export const FINISHED_EXECUTION_STATUSES: ExecutionStatus[] = ['SUCCEEDED', 'FAILED', 'CRASHED'];

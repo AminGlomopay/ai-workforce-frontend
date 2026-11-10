@@ -166,6 +166,8 @@
   --animate-ring-burst: ring-burst 0.9s ease-out both;
   --animate-draw: draw 0.5s ease-out 0.2s both;
   --animate-drain: drain linear both;
+  --animate-drawer-in: drawer-in 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+  --animate-drawer-out: drawer-out 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 
   @keyframes scan {
     from {
@@ -238,6 +240,19 @@
     }
     to {
       stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes drawer-in {
+    from {
+      width: 0;
+    }
+  }
+
+  /* A separate name from drawer-in: changing only the direction would not restart the animation. */
+  @keyframes drawer-out {
+    to {
+      width: 0;
     }
   }
 
