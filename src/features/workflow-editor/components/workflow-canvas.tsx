@@ -1,10 +1,12 @@
 import { FC } from 'react';
-import { Background, BackgroundVariant, Controls, ReactFlow, useStore } from '@xyflow/react';
+import { Background, BackgroundVariant, ReactFlow, useStore } from '@xyflow/react';
 
+import { CanvasControls } from './canvas-controls';
 import { CanvasEmptyHint } from './canvas-empty-hint';
 import { RunBar } from './run-bar';
 import { WorkflowCanvasNode } from './workflow-canvas-node';
 import { WorkflowEdge } from './workflow-edge';
+import { FIT_VIEW_OPTIONS } from '../constants/workflow-editor.constants';
 import { useConnectionRules } from '../hooks/use-connection-rules';
 import { useNodeDrop } from '../hooks/use-node-drop';
 import { useWorkflow } from '../hooks/use-workflow';
@@ -18,8 +20,6 @@ const EDGE_TYPES = { default: WorkflowEdge };
 const DEFAULT_EDGE_OPTIONS = { animated: true };
 
 const DELETE_KEYS = ['Backspace', 'Delete'];
-
-const FIT_VIEW_OPTIONS = { maxZoom: 1 };
 
 const PRO_OPTIONS = { hideAttribution: true };
 
@@ -50,7 +50,7 @@ export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
         fitViewOptions={FIT_VIEW_OPTIONS}
         proOptions={PRO_OPTIONS}>
         <Background variant={BackgroundVariant.Dots} gap={16} />
-        <Controls showInteractive={false} />
+        <CanvasControls />
       </ReactFlow>
       {isEmpty && <CanvasEmptyHint />}
       <RunBar />

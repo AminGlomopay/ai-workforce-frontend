@@ -28,6 +28,8 @@ export const NODE_TYPE_DRAG_FORMAT = 'application/x-workflow-node-type';
 
 export const OPERATION_PROPERTY_NAME = 'operation';
 
+export const FIT_VIEW_OPTIONS = { maxZoom: 1 };
+
 export const SAVED_TOAST_DURATION = 4500;
 
 export const RUN_BAR_AUTO_HIDE_DELAY = 5000;
