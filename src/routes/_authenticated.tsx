@@ -6,11 +6,11 @@ import { workflowsQueryOptions } from '@/features/workflows/public';
 import { LoadingState } from '@/shared/components/public';
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ context }) => {
+  beforeLoad: async ({ context, location }) => {
     try {
       await context.queryClient.ensureQueryData(currentUserQueryOptions);
     } catch (error) {
-      if (error instanceof UnauthenticatedError) throw redirect({ to: '/login' });
+      if (error instanceof UnauthenticatedError) throw redirect({ to: '/login', search: { returnTo: location.href } });
       throw error;
     }
   },

@@ -36,6 +36,6 @@ Tokens and animation utilities live in `src/index.css`: `primary`, `primary-soft
 
 Google OAuth only, handled by the backend (`ai-workforce`, `src/modules/auth`). The frontend never sees credentials:
 
-- `/login` links to `/auth/google?returnTo=/`; the backend sets the `aiw_session` cookie and redirects to `returnTo` (relative paths only).
+- `/login` links to `/auth/google?returnTo=<absolute app URL>`; the backend sets the `aiw_session` cookie and redirects to `returnTo` if it is on the app origin, else to the app root. `/login?returnTo=<path>` carries the page the user was sent away from.
 - The `_authenticated` layout route calls `GET /auth/me` in `beforeLoad`. A 401 redirects to `/login`; the user is exposed via `useCurrentUser()`.
 - In production the frontend (`app.ai-workforce.glomo.one`) calls the backend cross-origin at `BACKEND_URL` (`src/shared/constants/backend.constants.ts`) with `credentials: 'include'`; the backend allows the frontend origin via CORS. In dev, `BACKEND_URL` is empty and Vite proxies `/auth` to `http://localhost:51515`. The dev server runs on port 4719.
