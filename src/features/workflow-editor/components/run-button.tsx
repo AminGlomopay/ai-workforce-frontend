@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import { Play } from 'lucide-react';
 
-import { PulseSpinner } from './pulse-spinner';
-
+import { PulseSpinner } from '@/shared/components/public';
 import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/utils/cn';
 

@@ -10,4 +10,5 @@ export interface WorkflowSummary {
 
 export interface CreateWorkflowInput {
   name: string;
+  description?: string;
 }

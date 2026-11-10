@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router';
 
 import { createWorkflow } from '../apis/workflows.api';
 import { workflowsQueryOptions } from '../apis/workflows.queries';
+import { ValidationError } from '../errors/validation.error';
 
 export const useCreateWorkflow = () => {
   const navigate = useNavigate();
@@ -14,6 +15,6 @@ export const useCreateWorkflow = () => {
       await queryClient.invalidateQueries({ queryKey: workflowsQueryOptions.queryKey });
       await navigate({ to: '/workflows/$workflowId', params: { workflowId: id } });
     },
-    throwOnError: true,
+    throwOnError: (error) => !(error instanceof ValidationError),
   });
 };

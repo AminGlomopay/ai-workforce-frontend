@@ -27,6 +27,10 @@ export const EVENT_SOURCES = [
 
 export const DESTINATION_YS = [40, 101, 167, 231];
 
+export const WORKFLOW_NAME_MAX_LENGTH = 200;
+
+export const WORKFLOW_DESCRIPTION_MAX_LENGTH = 2000;
+
 export const WORKFLOWS_ENDPOINT = `${BACKEND_URL}/workflows`;
 
 export const WORKFLOWS_QUERY_KEYS = {
