@@ -23,6 +23,7 @@ Tokens and animation utilities live in `src/index.css`: `primary`, `primary-soft
 
 - Feature folders, mirroring `glomopay-checkout/apps/checkout`: `src/features/<feature>/{apis,components,constants,contexts,errors,hooks,pages,providers,reducers,schemas,types,utils}` plus a required `public.ts`. Import other features only through `public.ts`. App-wide pieces go in `src/shared/`, app bootstrap in `src/app/`.
 - Routes live in `src/routes/` (TanStack file-based) and stay thin: they wire a page from a feature's `public.ts`. `src/routeTree.gen.ts` is generated; commit it, never edit it.
+- Load API data with `useSuspenseQuery`, not `useQuery`, so `data` is always defined (no optional chaining, no loading branches). Prefetch in the route `loader` with `queryClient.ensureQueryData(...)`, show loading with the route's `pendingComponent`, and handle failures in its `errorComponent` (handle expected errors such as 404, rethrow the rest). Data the layout needs goes in the `_authenticated` loader, which runs in parallel with child loaders. Mutations throw unexpected errors to the boundary with `throwOnError`.
 - shadcn components install into `src/shared/components/ui` (see `components.json`). Use them instead of raw `<button>`/`<a>` where one fits (`Button asChild` for links).
 - Write the bare minimum code. No speculative edge cases, no unused props or options.
 - Prefer small components: one visual piece per file.
