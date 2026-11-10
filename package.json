@@ -8,11 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "format": "prettier --write src"
+    "format": "prettier --write src",
+    "test": "vitest run"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
+    "@jsonforms/core": "^3.8.0",
+    "@jsonforms/react": "^3.8.0",
     "@tailwindcss/vite": "^4.3.5",
     "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-router": "^1.170.46",
@@ -37,7 +40,8 @@
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "~7.0.2",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   },
   "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
 }

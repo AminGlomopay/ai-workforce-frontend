@@ -5,6 +5,7 @@ import { useWorkflowNodeTypes } from './use-workflow-node-types';
 import { NODE_TYPE_DRAG_FORMAT } from '../constants/workflow-editor.constants';
 import { CanvasNode } from '../types/workflow-editor.types';
 import { findNodeType } from '../utils/find-node-type';
+import { withDefaultParameters } from '../utils/node-parameters';
 import { uniqueNodeName } from '../utils/unique-node-name';
 
 export const useNodeDrop = () => {
@@ -19,7 +20,7 @@ export const useNodeDrop = () => {
 
   const onDrop = (event: DragEvent) => {
     event.preventDefault();
-    const { type, version } = JSON.parse(event.dataTransfer.getData(NODE_TYPE_DRAG_FORMAT));
+    const { type, version, parameters } = JSON.parse(event.dataTransfer.getData(NODE_TYPE_DRAG_FORMAT));
     const nodeType = findNodeType(nodeTypes, type, version);
     const takenNames = new Set(getNodes().map((node) => node.data.name));
 
@@ -27,7 +28,12 @@ export const useNodeDrop = () => {
       id: crypto.randomUUID(),
       type: 'workflowNode',
       position: screenToFlowPosition({ x: event.clientX, y: event.clientY }),
-      data: { name: uniqueNodeName(nodeType.defaults.name, takenNames), type: nodeType.type, typeVersion: nodeType.version },
+      data: {
+        name: uniqueNodeName(nodeType.defaults.name, takenNames),
+        type: nodeType.type,
+        typeVersion: nodeType.version,
+        parameters: withDefaultParameters(nodeType.properties, parameters),
+      },
     });
   };
 

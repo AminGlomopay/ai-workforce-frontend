@@ -6,6 +6,7 @@ import { WorkflowCanvasNode } from './workflow-canvas-node';
 import { useIsValidConnection } from '../hooks/use-is-valid-connection';
 import { useNodeDrop } from '../hooks/use-node-drop';
 import { useWorkflow } from '../hooks/use-workflow';
+import { useWorkflowNodeTypes } from '../hooks/use-workflow-node-types';
 import { toCanvasEdges, toCanvasNodes } from '../utils/workflow-graph';
 
 const NODE_TYPES = { workflowNode: WorkflowCanvasNode };
@@ -24,6 +25,7 @@ interface WorkflowCanvasProps {
 
 export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
   const { version } = useWorkflow(workflowId);
+  const nodeTypes = useWorkflowNodeTypes();
   const isEmpty = useStore((state) => state.nodes.length === 0);
   const isValidConnection = useIsValidConnection();
   const { onDragOver, onDrop } = useNodeDrop();
@@ -33,7 +35,7 @@ export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
       <ReactFlow
         colorMode='dark'
         nodeTypes={NODE_TYPES}
-        defaultNodes={toCanvasNodes(version.nodes)}
+        defaultNodes={toCanvasNodes(version.nodes, nodeTypes)}
         defaultEdges={toCanvasEdges(version.connections)}
         defaultEdgeOptions={DEFAULT_EDGE_OPTIONS}
         isValidConnection={isValidConnection}

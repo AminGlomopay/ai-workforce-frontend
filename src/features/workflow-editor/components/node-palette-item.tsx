@@ -4,20 +4,24 @@ import { GripVertical } from 'lucide-react';
 
 import { NodeTypeIcon } from './node-type-icon';
 import { NODE_TYPE_DRAG_FORMAT } from '../constants/workflow-editor.constants';
-import { CanvasNode, WorkflowNodeType } from '../types/workflow-editor.types';
+import { CanvasNode, PaletteEntry, WorkflowNodeType } from '../types/workflow-editor.types';
 
 import { cn } from '@/shared/utils/cn';
 
 interface NodePaletteItemProps {
   nodeType: WorkflowNodeType;
+  entry: PaletteEntry;
 }
 
-export const NodePaletteItem: FC<NodePaletteItemProps> = ({ nodeType }) => {
+export const NodePaletteItem: FC<NodePaletteItemProps> = ({ nodeType, entry }) => {
   const count = useNodes<CanvasNode>().filter(({ data }) => data.type === nodeType.type && data.typeVersion === nodeType.version).length;
   const isAtLimit = nodeType.maxNodes !== undefined && count >= nodeType.maxNodes;
 
   const onDragStart = (event: DragEvent) => {
-    event.dataTransfer.setData(NODE_TYPE_DRAG_FORMAT, JSON.stringify({ type: nodeType.type, version: nodeType.version }));
+    event.dataTransfer.setData(
+      NODE_TYPE_DRAG_FORMAT,
+      JSON.stringify({ type: nodeType.type, version: nodeType.version, parameters: entry.parameters }),
+    );
     event.dataTransfer.effectAllowed = 'copy';
   };
 
@@ -34,8 +38,8 @@ export const NodePaletteItem: FC<NodePaletteItemProps> = ({ nodeType }) => {
         <NodeTypeIcon icon={nodeType.icon} className='size-4' />
       </span>
       <div className='flex flex-1 flex-col gap-1'>
-        <span className='text-xs font-medium'>{nodeType.displayName}</span>
-        <span className='text-muted-foreground text-xs leading-snug'>{nodeType.description}</span>
+        <span className='text-xs font-medium'>{entry.label}</span>
+        <span className='text-muted-foreground text-xs leading-snug'>{entry.description}</span>
         {nodeType.maxNodes !== undefined && (
           <span className='text-muted-foreground font-mono text-[10px] tracking-widest uppercase'>
             {count}/{nodeType.maxNodes} on canvas{isAtLimit && ' · limit reached'}

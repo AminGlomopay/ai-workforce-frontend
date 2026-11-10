@@ -5,3 +5,6 @@ export const findNodeType = (nodeTypes: WorkflowNodeType[], type: string, versio
   if (!nodeType) throw new Error(`Unknown node type ${type}@${version}`);
   return nodeType;
 };
+
+export const hasNodeType = (nodeTypes: WorkflowNodeType[], type: string, version: number): boolean =>
+  nodeTypes.some((candidate) => candidate.type === type && candidate.version === version);

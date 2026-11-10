@@ -9,7 +9,7 @@ export const useHasUnsavedChanges = (workflowId: string, graph: WorkflowGraph) =
   const { version } = useWorkflow(workflowId);
   const nodeTypes = useWorkflowNodeTypes();
   const savedGraph = useMemo(
-    () => JSON.stringify(toWorkflowGraph(toCanvasNodes(version.nodes), toCanvasEdges(version.connections), nodeTypes)),
+    () => JSON.stringify(toWorkflowGraph(toCanvasNodes(version.nodes, nodeTypes), toCanvasEdges(version.connections), nodeTypes)),
     [version, nodeTypes],
   );
 
