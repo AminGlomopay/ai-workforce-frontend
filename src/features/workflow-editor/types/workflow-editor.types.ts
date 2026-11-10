@@ -78,6 +78,7 @@ export interface WorkflowGraph {
 export interface WorkflowVersion extends WorkflowGraph {
   id: string;
   number: number;
+  createdAt: string;
 }
 
 export interface Workflow {

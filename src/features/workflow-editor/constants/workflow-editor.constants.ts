@@ -20,3 +20,5 @@ export const NODE_GROUP_LABELS: Record<WorkflowNodeGroup, string> = {
 export const NODE_TYPE_DRAG_FORMAT = 'application/x-workflow-node-type';
 
 export const OPERATION_PROPERTY_NAME = 'operation';
+
+export const SAVED_TOAST_DURATION = 4500;
