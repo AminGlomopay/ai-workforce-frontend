@@ -1,5 +1,5 @@
-import { getRouteApi } from '@tanstack/react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
-const authenticatedRoute = getRouteApi('/_authenticated');
+import { currentUserQueryOptions } from '../apis/auth.queries';
 
-export const useCurrentUser = () => authenticatedRoute.useRouteContext().user;
+export const useCurrentUser = () => useSuspenseQuery(currentUserQueryOptions).data;

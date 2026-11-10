@@ -7,7 +7,7 @@ import { Button } from '@/shared/components/ui/button';
 
 export const SidebarUser: FC = () => {
   const user = useCurrentUser();
-  const logout = useLogout();
+  const { mutate: logout } = useLogout();
 
   return (
     <div className='flex items-center gap-2 border-t px-2 pt-4'>
@@ -19,7 +19,7 @@ export const SidebarUser: FC = () => {
         <span className='text-xs font-medium'>{user.name}</span>
         <span className='text-muted-foreground font-mono text-[10px]'>Signed in with Google</span>
       </div>
-      <Button variant='ghost' size='icon-xs' aria-label='Sign out' onClick={logout}>
+      <Button variant='ghost' size='icon-xs' aria-label='Sign out' onClick={() => logout()}>
         <LogOut />
       </Button>
     </div>
