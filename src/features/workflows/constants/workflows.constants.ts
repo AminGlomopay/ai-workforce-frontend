@@ -1,15 +1,17 @@
 import { Circle, Diamond, Plus, Square, Triangle } from 'lucide-react';
 
 export const PIPELINE_STEPS = [
-  { title: 'An event arrives', description: 'From any connected source.' },
-  { title: 'Your filters decide', description: 'Only what matches gets through.' },
-  { title: 'The agent runs your prompt', description: 'With the event as context.' },
-  { title: 'Results go where you say', description: 'The prompt picks the destination.' },
+  { title: 'Pick a trigger', description: 'Any event can start a workflow.' },
+  { title: 'Add nodes', description: 'Apps, logic and AI, dropped on the canvas.' },
+  { title: 'Wire them up', description: 'Edges carry data from node to node.' },
+  { title: 'Switch it on', description: 'It runs on every matching event.' },
 ];
 
 export const DIAGRAM_CENTER_Y = 135;
 
-export const GATE_X = 402;
+export const TRIGGER_X = 402;
+
+export const TRIGGER_RADIUS = 18;
 
 export const AGENT_X = 603;
 

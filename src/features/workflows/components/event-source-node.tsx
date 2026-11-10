@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { LucideIcon } from 'lucide-react';
 
-import { DIAGRAM_CENTER_Y, GATE_X } from '../constants/workflows.constants';
+import { DIAGRAM_CENTER_Y, TRIGGER_RADIUS, TRIGGER_X } from '../constants/workflows.constants';
 
 const NODE_X = 118;
 
@@ -12,7 +12,7 @@ interface EventSourceNodeProps {
 }
 
 export const EventSourceNode: FC<EventSourceNodeProps> = ({ y, icon: Icon, fill }) => {
-  const path = `M${NODE_X + 14} ${y} C 260 ${y}, 300 ${DIAGRAM_CENTER_Y}, ${GATE_X - 12} ${DIAGRAM_CENTER_Y}`;
+  const path = `M${NODE_X + 14} ${y} C 260 ${y}, 300 ${DIAGRAM_CENTER_Y}, ${TRIGGER_X - TRIGGER_RADIUS} ${DIAGRAM_CENTER_Y}`;
 
   return (
     <g>

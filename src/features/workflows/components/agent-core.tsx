@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { AGENT_X, DIAGRAM_CENTER_Y, GATE_X } from '../constants/workflows.constants';
+import { AGENT_X, DIAGRAM_CENTER_Y, TRIGGER_RADIUS, TRIGGER_X } from '../constants/workflows.constants';
 
 const CORE_RADIUS = 22;
 
 export const AgentCore: FC = () => {
-  const feedPath = `M${GATE_X + 12} ${DIAGRAM_CENTER_Y} H${AGENT_X - CORE_RADIUS}`;
+  const feedPath = `M${TRIGGER_X + TRIGGER_RADIUS} ${DIAGRAM_CENTER_Y} H${AGENT_X - CORE_RADIUS}`;
 
   return (
     <g>
