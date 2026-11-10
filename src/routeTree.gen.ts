@@ -13,6 +13,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedWorkflowsIndexRouteImport } from './routes/_authenticated/workflows/index'
+import { Route as AuthenticatedWorkflowsWorkflowIdRouteImport } from './routes/_authenticated/workflows/$workflowId'
 import { Route as AuthenticatedWorkflowsNewRouteImport } from './routes/_authenticated/workflows/new'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
@@ -35,6 +36,12 @@ const AuthenticatedWorkflowsIndexRoute =
     path: '/workflows/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedWorkflowsWorkflowIdRoute =
+  AuthenticatedWorkflowsWorkflowIdRouteImport.update({
+    id: '/workflows/$workflowId',
+    path: '/workflows/$workflowId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedWorkflowsNewRoute =
   AuthenticatedWorkflowsNewRouteImport.update({
     id: '/workflows/new',
@@ -45,12 +52,14 @@ const AuthenticatedWorkflowsNewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
+  '/workflows/$workflowId': typeof AuthenticatedWorkflowsWorkflowIdRoute
   '/workflows/new': typeof AuthenticatedWorkflowsNewRoute
   '/workflows/': typeof AuthenticatedWorkflowsIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
+  '/workflows/$workflowId': typeof AuthenticatedWorkflowsWorkflowIdRoute
   '/workflows/new': typeof AuthenticatedWorkflowsNewRoute
   '/workflows': typeof AuthenticatedWorkflowsIndexRoute
 }
@@ -59,19 +68,23 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/workflows/$workflowId': typeof AuthenticatedWorkflowsWorkflowIdRoute
   '/_authenticated/workflows/new': typeof AuthenticatedWorkflowsNewRoute
   '/_authenticated/workflows/': typeof AuthenticatedWorkflowsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/workflows/new' | '/workflows/'
+  fullPaths:
+    '/' | '/login' | '/workflows/$workflowId' | '/workflows/new' | '/workflows/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/workflows/new' | '/workflows'
+  to:
+    '/login' | '/' | '/workflows/$workflowId' | '/workflows/new' | '/workflows'
   id:
     | '__root__'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/'
+    | '/_authenticated/workflows/$workflowId'
     | '/_authenticated/workflows/new'
     | '/_authenticated/workflows/'
   fileRoutesById: FileRoutesById
@@ -111,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkflowsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/workflows/$workflowId': {
+      id: '/_authenticated/workflows/$workflowId'
+      path: '/workflows/$workflowId'
+      fullPath: '/workflows/$workflowId'
+      preLoaderRoute: typeof AuthenticatedWorkflowsWorkflowIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/workflows/new': {
       id: '/_authenticated/workflows/new'
       path: '/workflows/new'
@@ -123,12 +143,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedWorkflowsWorkflowIdRoute: typeof AuthenticatedWorkflowsWorkflowIdRoute
   AuthenticatedWorkflowsNewRoute: typeof AuthenticatedWorkflowsNewRoute
   AuthenticatedWorkflowsIndexRoute: typeof AuthenticatedWorkflowsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedWorkflowsWorkflowIdRoute: AuthenticatedWorkflowsWorkflowIdRoute,
   AuthenticatedWorkflowsNewRoute: AuthenticatedWorkflowsNewRoute,
   AuthenticatedWorkflowsIndexRoute: AuthenticatedWorkflowsIndexRoute,
 }

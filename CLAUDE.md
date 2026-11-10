@@ -35,6 +35,7 @@ Tokens and animation utilities live in `src/index.css`: `primary`, `primary-soft
 
 Google OAuth only, handled by the backend (`ai-workforce`, `src/modules/auth`). The frontend never sees credentials:
 
-- `/login` links to `/auth/google?returnTo=/`; the backend sets the `aiw_session` cookie and redirects to `returnTo` (relative paths only).
-- The `_authenticated` layout route calls `GET /auth/me` in `beforeLoad`. A 401 redirects to `/login`; the user is exposed via `useCurrentUser()`.
-- In production the frontend (`app.ai-workforce.glomo.one`) calls the backend cross-origin at `BACKEND_URL` (`src/shared/constants/backend.constants.ts`) with `credentials: 'include'`; the backend allows the frontend origin via CORS. In dev, `BACKEND_URL` is empty and Vite proxies `/auth` to `http://localhost:51515`. The dev server runs on port 4719.
+- `/login` links to `/auth/google?returnTo=<absolute app URL>`; the backend sets the `aiw_session` cookie and redirects to `returnTo` if it is on the app origin, else to the app root. `/login?returnTo=<path>` carries the page the user was sent away from.
+- The `_authenticated` layout route calls `GET /auth/me` in `beforeLoad`. A 401 redirects to `/login`; the user is exposed via `useCurrentUser()`. Any later 401 from a query or mutation does the same (global handler in `src/app/components/app.tsx`).
+- All backend calls go through `requestBackend` (`src/shared/apis/request-backend.ts`): it sends cookies and throws `UnauthenticatedError` (401), `ValidationError` (400, `errors` field map) or `BackendError`.
+- In production the frontend (`app.ai-workforce.glomo.one`) calls the backend cross-origin at `BACKEND_URL` (`src/shared/constants/backend.constants.ts`) with `credentials: 'include'`; the backend allows the frontend origin via CORS. In dev, `BACKEND_URL` is empty and Vite proxies `/auth` and `/workflows` to `http://localhost:51515` (page loads of `/workflows/*`, `Accept: text/html`, fall through to the SPA). The dev server runs on port 4719.
