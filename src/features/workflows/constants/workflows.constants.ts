@@ -1,5 +1,7 @@
 import { Circle, Diamond, Plus, Square, Triangle } from 'lucide-react';
 
+import { BACKEND_URL } from '@/shared/constants/backend.constants';
+
 export const PIPELINE_STEPS = [
   { title: 'Pick a trigger', description: 'Any event can start a workflow.' },
   { title: 'Add nodes', description: 'Apps, logic and AI, dropped on the canvas.' },
@@ -24,3 +26,9 @@ export const EVENT_SOURCES = [
 ];
 
 export const DESTINATION_YS = [40, 101, 167, 231];
+
+export const WORKFLOWS_ENDPOINT = `${BACKEND_URL}/workflows`;
+
+export const WORKFLOWS_QUERY_KEYS = {
+  LIST: ['workflows', 'list'],
+} as const;

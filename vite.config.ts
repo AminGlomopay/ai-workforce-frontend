@@ -12,6 +12,11 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/auth': 'http://localhost:51515',
+      '/workflow-node-types': 'http://localhost:51515',
+      '/workflows': {
+        target: 'http://localhost:51515',
+        bypass: (req) => (req.headers.accept?.includes('text/html') ? req.url : undefined),
+      },
     },
   },
   resolve: {

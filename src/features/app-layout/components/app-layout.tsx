@@ -9,6 +9,6 @@ interface AppLayoutProps {
 export const AppLayout: FC<AppLayoutProps> = ({ children }) => (
   <div className='flex min-h-dvh'>
     <Sidebar />
-    <main className='flex-1 px-9 py-9'>{children}</main>
+    <main className='min-w-0 flex-1'>{children}</main>
   </div>
 );

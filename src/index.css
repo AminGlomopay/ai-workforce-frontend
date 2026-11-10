@@ -3,6 +3,7 @@
 @import 'shadcn/tailwind.css';
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
+@import '@xyflow/react/dist/style.css' layer(base);
 
 @custom-variant dark (&:is(.dark *));
 
@@ -125,6 +126,26 @@
   background:
     radial-gradient(circle, rgb(255 255 255 / 4%) 1px, transparent 1px) 0 0 / 16px 16px,
     radial-gradient(ellipse 70% 60% at 58% 30%, #1a2878 0%, #0d1440 45%, #080a1c 100%);
+}
+
+@utility bg-canvas-glow {
+  background: radial-gradient(ellipse 70% 60% at 58% 30%, #1a2878 0%, #0d1440 45%, #080a1c 100%);
+}
+
+.react-flow {
+  --xy-background-color: transparent;
+  --xy-background-pattern-dots-color: rgb(255 255 255 / 10%);
+  --xy-edge-stroke: var(--primary-soft);
+  --xy-edge-stroke-width: 1.5;
+  --xy-edge-stroke-selected: var(--foreground);
+  --xy-connectionline-stroke: var(--primary-soft);
+  --xy-connectionline-stroke-width: 1.5;
+  --xy-controls-button-background-color: var(--card);
+  --xy-controls-button-background-color-hover: var(--secondary);
+  --xy-controls-button-color: var(--muted-foreground);
+  --xy-controls-button-color-hover: var(--foreground);
+  --xy-controls-button-border-color: var(--border);
+  --xy-attribution-background-color: transparent;
 }
 
 @theme {

@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
 import { AppLayout } from '@/features/app-layout/public';
 import { currentUserQueryOptions, UnauthenticatedError } from '@/features/auth/public';
+import { workflowsQueryOptions } from '@/features/workflows/public';
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context }) => {
@@ -12,6 +13,7 @@ export const Route = createFileRoute('/_authenticated')({
       throw error;
     }
   },
+  loader: ({ context }) => context.queryClient.ensureQueryData(workflowsQueryOptions),
   component: () => (
     <AppLayout>
       <Outlet />

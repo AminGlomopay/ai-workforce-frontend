@@ -12,7 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
-import { Route as AuthenticatedWorkflowsRouteImport } from './routes/_authenticated/workflows'
+import { Route as AuthenticatedWorkflowsIndexRouteImport } from './routes/_authenticated/workflows/index'
+import { Route as AuthenticatedWorkflowsWorkflowIdRouteImport } from './routes/_authenticated/workflows/$workflowId'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -28,40 +29,51 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedWorkflowsRoute = AuthenticatedWorkflowsRouteImport.update({
-  id: '/workflows',
-  path: '/workflows',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
+const AuthenticatedWorkflowsIndexRoute =
+  AuthenticatedWorkflowsIndexRouteImport.update({
+    id: '/workflows/',
+    path: '/workflows/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedWorkflowsWorkflowIdRoute =
+  AuthenticatedWorkflowsWorkflowIdRouteImport.update({
+    id: '/workflows/$workflowId',
+    path: '/workflows/$workflowId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
-  '/workflows': typeof AuthenticatedWorkflowsRoute
+  '/workflows/$workflowId': typeof AuthenticatedWorkflowsWorkflowIdRoute
+  '/workflows/': typeof AuthenticatedWorkflowsIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/workflows': typeof AuthenticatedWorkflowsRoute
   '/': typeof AuthenticatedIndexRoute
+  '/workflows/$workflowId': typeof AuthenticatedWorkflowsWorkflowIdRoute
+  '/workflows': typeof AuthenticatedWorkflowsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/workflows': typeof AuthenticatedWorkflowsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/workflows/$workflowId': typeof AuthenticatedWorkflowsWorkflowIdRoute
+  '/_authenticated/workflows/': typeof AuthenticatedWorkflowsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/workflows'
+  fullPaths: '/' | '/login' | '/workflows/$workflowId' | '/workflows/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/workflows' | '/'
+  to: '/login' | '/' | '/workflows/$workflowId' | '/workflows'
   id:
     | '__root__'
     | '/_authenticated'
     | '/login'
-    | '/_authenticated/workflows'
     | '/_authenticated/'
+    | '/_authenticated/workflows/$workflowId'
+    | '/_authenticated/workflows/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,24 +104,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/workflows': {
-      id: '/_authenticated/workflows'
+    '/_authenticated/workflows/': {
+      id: '/_authenticated/workflows/'
       path: '/workflows'
-      fullPath: '/workflows'
-      preLoaderRoute: typeof AuthenticatedWorkflowsRouteImport
+      fullPath: '/workflows/'
+      preLoaderRoute: typeof AuthenticatedWorkflowsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/workflows/$workflowId': {
+      id: '/_authenticated/workflows/$workflowId'
+      path: '/workflows/$workflowId'
+      fullPath: '/workflows/$workflowId'
+      preLoaderRoute: typeof AuthenticatedWorkflowsWorkflowIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedWorkflowsRoute: typeof AuthenticatedWorkflowsRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedWorkflowsWorkflowIdRoute: typeof AuthenticatedWorkflowsWorkflowIdRoute
+  AuthenticatedWorkflowsIndexRoute: typeof AuthenticatedWorkflowsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedWorkflowsRoute: AuthenticatedWorkflowsRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedWorkflowsWorkflowIdRoute: AuthenticatedWorkflowsWorkflowIdRoute,
+  AuthenticatedWorkflowsIndexRoute: AuthenticatedWorkflowsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
