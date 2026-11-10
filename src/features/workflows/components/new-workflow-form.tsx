@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useCreateWorkflow } from '../hooks/use-create-workflow';
 import { createWorkflowSchema } from '../schemas/create-workflow.schema';
 
+import { LoadingButton } from '@/shared/components/public';
 import { Button } from '@/shared/components/ui/button';
 import { DialogClose } from '@/shared/components/ui/dialog';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/components/ui/field';
@@ -56,12 +57,13 @@ export const NewWorkflowForm: FC = () => {
         <DialogClose asChild>
           <Button variant='ghost'>Cancel</Button>
         </DialogClose>
-        <Button
+        <LoadingButton
           type='submit'
-          disabled={isPending}
+          loading={isPending}
+          loadingLabel='Creating workflow'
           className='ring-primary-soft/30 shadow-primary/50 bg-linear-to-b from-white/15 to-transparent px-4 shadow-[0_0_24px] ring-1'>
-          {isPending ? 'Creating…' : 'Create workflow'}
-        </Button>
+          Create workflow
+        </LoadingButton>
       </div>
     </form>
   );
