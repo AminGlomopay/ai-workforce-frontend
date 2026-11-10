@@ -29,6 +29,7 @@ Tokens and animation utilities live in `src/index.css`: `primary`, `primary-soft
 - When something goes wrong, throw an error. Never return `null` to signal failure.
 - Files kebab-case, components PascalCase, constants UPPER_SNAKE_CASE. No comments that restate the code.
 - Run `pnpm format`, `pnpm build` and `pnpm lint` before handing work back.
+- Commit and push directly to `main` (`git push origin HEAD:main`); no feature branches or PRs for this project.
 
 ## Auth
 
