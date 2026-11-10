@@ -1,5 +1,7 @@
+import { BACKEND_URL } from '@/shared/constants/backend.constants';
+
 export const AUTH_ENDPOINTS = {
-  ME: '/auth/me',
-  LOGOUT: '/auth/logout',
-  GOOGLE_SIGN_IN: '/auth/google?returnTo=/',
+  ME: `${BACKEND_URL}/auth/me`,
+  LOGOUT: `${BACKEND_URL}/auth/logout`,
+  GOOGLE_SIGN_IN: `${BACKEND_URL}/auth/google?returnTo=/`,
 };

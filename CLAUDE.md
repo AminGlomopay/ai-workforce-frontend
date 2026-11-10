@@ -36,4 +36,4 @@ Google OAuth only, handled by the backend (`ai-workforce`, `src/modules/auth`). 
 
 - `/login` links to `/auth/google?returnTo=/`; the backend sets the `aiw_session` cookie and redirects to `returnTo` (relative paths only).
 - The `_authenticated` layout route calls `GET /auth/me` in `beforeLoad`. A 401 redirects to `/login`; the user is exposed via `useCurrentUser()`.
-- The frontend must share an origin with `/auth/*` (the backend has no CORS). In dev, Vite proxies `/auth` to `http://localhost:51515`. The dev server runs on port 4719.
+- In production the frontend (`app.ai-workforce.glomo.one`) calls the backend cross-origin at `BACKEND_URL` (`src/shared/constants/backend.constants.ts`) with `credentials: 'include'`; the backend allows the frontend origin via CORS. In dev, `BACKEND_URL` is empty and Vite proxies `/auth` to `http://localhost:51515`. The dev server runs on port 4719.
