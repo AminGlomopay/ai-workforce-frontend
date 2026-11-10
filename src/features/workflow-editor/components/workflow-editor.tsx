@@ -21,8 +21,8 @@ export const WorkflowEditor: FC<WorkflowEditorProps> = ({ workflowId }) => {
       <div className='flex h-dvh flex-col'>
         <EditorTopBar workflowId={workflowId} />
         <div className='flex min-h-0 flex-1'>
-          <NodePalette />
           <WorkflowCanvas workflowId={workflowId} />
+          <NodePalette />
         </div>
       </div>
     </ReactFlowProvider>

@@ -20,7 +20,7 @@ export const SaveErrorPanel: FC<SaveErrorPanelProps> = ({ workflowId, error, onR
   return (
     <div
       role='alert'
-      className='bg-popover border-destructive/40 animate-in fade-in slide-in-from-top-1 absolute top-full right-6 z-10 mt-2 flex w-96 flex-col gap-3 rounded-lg border p-4 shadow-xl'>
+      className='bg-popover border-destructive/40 animate-in fade-in slide-in-from-top-1 absolute top-full right-78 z-10 mt-2 flex w-96 flex-col gap-3 rounded-lg border p-4 shadow-xl'>
       <span className='text-destructive flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase'>
         <TriangleAlert className='size-3.5' />
         {error instanceof WorkflowConflictError ? 'Saved elsewhere' : 'Not saved'}
