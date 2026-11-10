@@ -2,14 +2,18 @@ import { FC } from 'react';
 import { Background, BackgroundVariant, Controls, ReactFlow, useStore } from '@xyflow/react';
 
 import { CanvasEmptyHint } from './canvas-empty-hint';
+import { RunBar } from './run-bar';
 import { WorkflowCanvasNode } from './workflow-canvas-node';
-import { useIsValidConnection } from '../hooks/use-is-valid-connection';
+import { WorkflowEdge } from './workflow-edge';
+import { useConnectionRules } from '../hooks/use-connection-rules';
 import { useNodeDrop } from '../hooks/use-node-drop';
 import { useWorkflow } from '../hooks/use-workflow';
 import { useWorkflowNodeTypes } from '../hooks/use-workflow-node-types';
 import { toCanvasEdges, toCanvasNodes } from '../utils/workflow-graph';
 
 const NODE_TYPES = { workflowNode: WorkflowCanvasNode };
+
+const EDGE_TYPES = { default: WorkflowEdge };
 
 const DEFAULT_EDGE_OPTIONS = { animated: true };
 
@@ -27,7 +31,7 @@ export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
   const { version } = useWorkflow(workflowId);
   const nodeTypes = useWorkflowNodeTypes();
   const isEmpty = useStore((state) => state.nodes.length === 0);
-  const isValidConnection = useIsValidConnection();
+  const { isValidConnection, onConnectEnd } = useConnectionRules();
   const { onDragOver, onDrop } = useNodeDrop();
 
   return (
@@ -35,10 +39,12 @@ export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
       <ReactFlow
         colorMode='dark'
         nodeTypes={NODE_TYPES}
+        edgeTypes={EDGE_TYPES}
         defaultNodes={toCanvasNodes(version.nodes, nodeTypes)}
         defaultEdges={toCanvasEdges(version.connections)}
         defaultEdgeOptions={DEFAULT_EDGE_OPTIONS}
         isValidConnection={isValidConnection}
+        onConnectEnd={onConnectEnd}
         deleteKeyCode={DELETE_KEYS}
         fitView
         fitViewOptions={FIT_VIEW_OPTIONS}
@@ -47,6 +53,7 @@ export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
         <Controls showInteractive={false} />
       </ReactFlow>
       {isEmpty && <CanvasEmptyHint />}
+      <RunBar />
     </div>
   );
 };

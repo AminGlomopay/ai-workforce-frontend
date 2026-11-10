@@ -4,9 +4,10 @@ export type WorkflowPortKind = 'main';
 
 export interface WorkflowPort {
   kind: WorkflowPortKind;
+  name?: string;
 }
 
-export type WorkflowNodeGroup = 'trigger' | 'action';
+export type WorkflowNodeGroup = 'trigger' | 'controlFlow' | 'action';
 
 export type NodeParameters = Record<string, string>;
 
@@ -93,8 +94,8 @@ export interface SaveWorkflowInput extends WorkflowGraph {
 }
 
 export type WorkflowErrorResponse =
-  | { statusCode: number; message: string; errorCode: 'WORKFLOW_NOT_FOUND' | 'WORKFLOW_VERSION_CONFLICT' }
-  | { statusCode: number; message: string; errorCode: 'INVALID_WORKFLOW_GRAPH'; errors: string[] };
+  | { statusCode: number; message: string; errorCode: 'WORKFLOW_NOT_FOUND' | 'WORKFLOW_VERSION_CONFLICT' | 'WORKFLOW_VERSION_NOT_FOUND' }
+  | { statusCode: number; message: string; errorCode: 'INVALID_WORKFLOW_GRAPH' | 'WORKFLOW_HAS_ISSUES'; errors: string[] };
 
 export interface ValidationErrorResponse {
   message: string;

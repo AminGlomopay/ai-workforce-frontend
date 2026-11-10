@@ -15,7 +15,7 @@ export const NodeSettingsPanel: FC = () => {
   return (
     <aside
       key={node.id}
-      className='nokey bg-sidebar animate-in fade-in slide-in-from-right-4 fill-mode-both flex w-80 shrink-0 flex-col gap-6 overflow-y-auto border-l p-5 duration-300'>
+      className='nokey bg-sidebar animate-in fade-in slide-in-from-right-4 fill-mode-both flex w-96 shrink-0 flex-col gap-6 overflow-y-auto border-l p-5 duration-300'>
       {hasNodeType(nodeTypes, node.data.type, node.data.typeVersion) ? (
         <KnownNodeSettings node={node} nodeType={findNodeType(nodeTypes, node.data.type, node.data.typeVersion)} />
       ) : (

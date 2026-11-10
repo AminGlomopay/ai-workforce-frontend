@@ -7,6 +7,7 @@ import { NodeSettingsPanel } from './node-settings-panel';
 import { WorkflowCanvas } from './workflow-canvas';
 import { useWorkflow } from '../hooks/use-workflow';
 import { useWorkflowNodeTypes } from '../hooks/use-workflow-node-types';
+import { WorkflowRunProvider } from '../providers/workflow-run.provider';
 import { toCanvasEdges, toCanvasNodes } from '../utils/workflow-graph';
 
 interface WorkflowEditorProps {
@@ -21,14 +22,16 @@ export const WorkflowEditor: FC<WorkflowEditorProps> = ({ workflowId }) => {
 
   return (
     <ReactFlowProvider defaultNodes={toCanvasNodes(version.nodes, nodeTypes)} defaultEdges={toCanvasEdges(version.connections)}>
-      <div className='flex h-dvh flex-col'>
-        <EditorTopBar workflowId={workflowId} />
-        <div className='flex min-h-0 flex-1'>
-          <WorkflowCanvas workflowId={workflowId} />
-          <NodeSettingsPanel />
-          <NodePalette />
+      <WorkflowRunProvider>
+        <div className='flex h-dvh flex-col'>
+          <EditorTopBar workflowId={workflowId} />
+          <div className='flex min-h-0 flex-1'>
+            <WorkflowCanvas workflowId={workflowId} />
+            <NodeSettingsPanel />
+            <NodePalette />
+          </div>
         </div>
-      </div>
+      </WorkflowRunProvider>
     </ReactFlowProvider>
   );
 };

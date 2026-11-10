@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Save } from 'lucide-react';
 
-import { SavingSpinner } from './saving-spinner';
+import { PulseSpinner } from './pulse-spinner';
 
 import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/utils/cn';
@@ -29,7 +29,7 @@ export const SaveButton: FC<SaveButtonProps> = ({ disabled, isSaving, onClick })
         <span className='pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]'>
           <span className='animate-shimmer absolute inset-y-0 w-1/3 bg-linear-to-r from-transparent via-white/40 to-transparent' />
         </span>
-        <SavingSpinner />
+        <PulseSpinner />
         <span className='drop-shadow-[0_0_6px_white]'>Saving…</span>
       </>
     ) : (
