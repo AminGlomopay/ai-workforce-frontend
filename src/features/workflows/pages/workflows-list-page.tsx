@@ -11,9 +11,7 @@ export const WorkflowsListPage: FC = () => {
 
   return (
     <div className='px-9 py-9'>
-      <WorkflowsPageHeader eyebrow='Event-driven agents' title='Workflows'>
-        {workflows.length > 0 && <NewWorkflowButton />}
-      </WorkflowsPageHeader>
+      <WorkflowsPageHeader>{workflows.length > 0 && <NewWorkflowButton />}</WorkflowsPageHeader>
       {workflows.length > 0 ? <WorkflowsList workflows={workflows} /> : <WorkflowsEmptyState />}
     </div>
   );

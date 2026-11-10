@@ -1,12 +1,11 @@
 import { FC, FormEvent, useState } from 'react';
-import { Link } from '@tanstack/react-router';
 import { z } from 'zod';
 
 import { useCreateWorkflow } from '../hooks/use-create-workflow';
 import { createWorkflowSchema } from '../schemas/create-workflow.schema';
 
-import { CornerMarks } from '@/shared/components/public';
 import { Button } from '@/shared/components/ui/button';
+import { DialogClose } from '@/shared/components/ui/dialog';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/components/ui/field';
 import { Input } from '@/shared/components/ui/input';
 import { Textarea } from '@/shared/components/ui/textarea';
@@ -30,11 +29,7 @@ export const NewWorkflowForm: FC = () => {
   };
 
   return (
-    <form
-      noValidate
-      onSubmit={handleSubmit}
-      className='bg-grid-glow border-primary/25 animate-in fade-in slide-in-from-bottom-4 fill-mode-both relative max-w-2xl rounded-xl border p-7 duration-700'>
-      <CornerMarks />
+    <form noValidate onSubmit={handleSubmit}>
       <FieldGroup>
         <Field data-invalid={!!errors.name}>
           <FieldLabel htmlFor='name' className='font-mono text-[10px] tracking-widest uppercase'>
@@ -58,9 +53,9 @@ export const NewWorkflowForm: FC = () => {
         </Field>
       </FieldGroup>
       <div className='mt-8 flex justify-end gap-2'>
-        <Button asChild variant='ghost'>
-          <Link to='/workflows'>Cancel</Link>
-        </Button>
+        <DialogClose asChild>
+          <Button variant='ghost'>Cancel</Button>
+        </DialogClose>
         <Button
           type='submit'
           disabled={isPending}
