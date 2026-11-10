@@ -58,9 +58,13 @@ export interface SaveWorkflowInput extends WorkflowGraph {
   baseVersionId: string;
 }
 
-export interface InvalidWorkflowResponse {
+export type WorkflowErrorResponse =
+  | { statusCode: number; message: string; errorCode: 'WORKFLOW_NOT_FOUND' | 'WORKFLOW_VERSION_CONFLICT' }
+  | { statusCode: number; message: string; errorCode: 'INVALID_WORKFLOW_GRAPH'; errors: string[] };
+
+export interface ValidationErrorResponse {
   message: string;
-  errors: string[] | Record<string, string[]>;
+  errors: Record<string, string[]>;
 }
 
 export type CanvasNode = Node<Pick<WorkflowNode, 'name' | 'type' | 'typeVersion'>, 'workflowNode'>;

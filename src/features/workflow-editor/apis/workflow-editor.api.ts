@@ -2,13 +2,21 @@ import { WORKFLOW_EDITOR_ENDPOINTS } from '../constants/workflow-editor.constant
 import { InvalidWorkflowError } from '../errors/invalid-workflow.error';
 import { WorkflowConflictError } from '../errors/workflow-conflict.error';
 import { WorkflowNotFoundError } from '../errors/workflow-not-found.error';
-import { SaveWorkflowInput, Workflow, WorkflowNodeType } from '../types/workflow-editor.types';
+import { SaveWorkflowInput, ValidationErrorResponse, Workflow, WorkflowErrorResponse, WorkflowNodeType } from '../types/workflow-editor.types';
+
+const throwWorkflowError = async (response: Response, request: string): Promise<never> => {
+  const body: WorkflowErrorResponse = await response.json();
+  if (body.errorCode === 'WORKFLOW_NOT_FOUND') throw new WorkflowNotFoundError();
+  if (body.errorCode === 'WORKFLOW_VERSION_CONFLICT') throw new WorkflowConflictError();
+  if (body.errorCode === 'INVALID_WORKFLOW_GRAPH') throw new InvalidWorkflowError(body.errors);
+  throw new Error(`${request} failed with ${response.status}`);
+};
 
 export const fetchWorkflow = async (workflowId: string): Promise<Workflow> => {
   const url = WORKFLOW_EDITOR_ENDPOINTS.WORKFLOW(workflowId);
   const response = await fetch(url, { credentials: 'include' });
-  if (response.status === 400 || response.status === 404) throw new WorkflowNotFoundError();
-  if (!response.ok) throw new Error(`GET ${url} failed with ${response.status}`);
+  if (response.status === 400) throw new WorkflowNotFoundError();
+  if (!response.ok) await throwWorkflowError(response, `GET ${url}`);
   return response.json();
 };
 
@@ -20,10 +28,13 @@ export const saveWorkflow = async (workflowId: string, input: SaveWorkflowInput)
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   });
-  if (response.status === 400) throw new InvalidWorkflowError(await response.json());
-  if (response.status === 404) throw new WorkflowNotFoundError();
-  if (response.status === 409) throw new WorkflowConflictError((await response.json()).latestVersionNumber);
-  if (!response.ok) throw new Error(`PATCH ${url} failed with ${response.status}`);
+  if (response.status === 400) {
+    const { errors }: ValidationErrorResponse = await response.json();
+    throw new InvalidWorkflowError(
+      Object.entries(errors).flatMap(([field, fieldErrors]) => fieldErrors.map((fieldError) => `${field}: ${fieldError}`)),
+    );
+  }
+  if (!response.ok) await throwWorkflowError(response, `PATCH ${url}`);
   return response.json();
 };
 
