@@ -23,6 +23,7 @@ Tokens and animation utilities live in `src/index.css`: `primary`, `primary-soft
 
 - Feature folders, mirroring `glomopay-checkout/apps/checkout`: `src/features/<feature>/{apis,components,constants,contexts,errors,hooks,pages,providers,reducers,schemas,types,utils}` plus a required `public.ts`. Import other features only through `public.ts`. App-wide pieces go in `src/shared/`, app bootstrap in `src/app/`.
 - Routes live in `src/routes/` (TanStack file-based) and stay thin: they wire a page from a feature's `public.ts`. `src/routeTree.gen.ts` is generated; commit it, never edit it.
+- Load API data with `useSuspenseQuery`, not `useQuery`, so `data` is always defined (no optional chaining, no loading branches). Prefetch in the route `loader` with `queryClient.ensureQueryData(...)`, show loading with the route's `pendingComponent`, and handle failures in its `errorComponent` (handle expected errors such as 404, rethrow the rest). Data the layout needs goes in the `_authenticated` loader, which runs in parallel with child loaders. Mutations throw unexpected errors to the boundary with `throwOnError`.
 - shadcn components install into `src/shared/components/ui` (see `components.json`). Use them instead of raw `<button>`/`<a>` where one fits (`Button asChild` for links).
 - Write the bare minimum code. No speculative edge cases, no unused props or options.
 - Prefer small components: one visual piece per file.
@@ -35,6 +36,7 @@ Tokens and animation utilities live in `src/index.css`: `primary`, `primary-soft
 
 Google OAuth only, handled by the backend (`ai-workforce`, `src/modules/auth`). The frontend never sees credentials:
 
-- `/login` links to `/auth/google?returnTo=/`; the backend sets the `aiw_session` cookie and redirects to `returnTo` (relative paths only).
-- The `_authenticated` layout route calls `GET /auth/me` in `beforeLoad`. A 401 redirects to `/login`; the user is exposed via `useCurrentUser()`.
-- In production the frontend (`app.ai-workforce.glomo.one`) calls the backend cross-origin at `BACKEND_URL` (`src/shared/constants/backend.constants.ts`) with `credentials: 'include'`; the backend allows the frontend origin via CORS. In dev, `BACKEND_URL` is empty and Vite proxies `/auth` to `http://localhost:51515`. The dev server runs on port 4719.
+- `/login` links to `/auth/google?returnTo=<absolute app URL>`; the backend sets the `aiw_session` cookie and redirects to `returnTo` if it is on the app origin, else to the app root. `/login?returnTo=<path>` carries the page the user was sent away from.
+- The `_authenticated` layout route calls `GET /auth/me` in `beforeLoad`. A 401 redirects to `/login`; the user is exposed via `useCurrentUser()`. Any later 401 from a query or mutation does the same (global handler in `src/app/components/app.tsx`).
+- All backend calls go through `requestBackend` (`src/shared/apis/request-backend.ts`): it sends cookies and throws `UnauthenticatedError` (401), `ValidationError` (400, `errors` field map) or `BackendError`.
+- In production the frontend (`app.ai-workforce.glomo.one`) calls the backend cross-origin at `BACKEND_URL` (`src/shared/constants/backend.constants.ts`) with `credentials: 'include'`; the backend allows the frontend origin via CORS. In dev, `BACKEND_URL` is empty and Vite proxies `/auth` and `/workflows` to `http://localhost:51515` (page loads of `/workflows/*`, `Accept: text/html`, fall through to the SPA). The dev server runs on port 4719.
