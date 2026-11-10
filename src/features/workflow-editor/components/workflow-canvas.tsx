@@ -16,6 +16,8 @@ const DELETE_KEYS = ['Backspace', 'Delete'];
 
 const FIT_VIEW_OPTIONS = { maxZoom: 1 };
 
+const PRO_OPTIONS = { hideAttribution: true };
+
 interface WorkflowCanvasProps {
   workflowId: string;
 }
@@ -37,7 +39,8 @@ export const WorkflowCanvas: FC<WorkflowCanvasProps> = ({ workflowId }) => {
         isValidConnection={isValidConnection}
         deleteKeyCode={DELETE_KEYS}
         fitView
-        fitViewOptions={FIT_VIEW_OPTIONS}>
+        fitViewOptions={FIT_VIEW_OPTIONS}
+        proOptions={PRO_OPTIONS}>
         <Background variant={BackgroundVariant.Dots} gap={16} />
         <Controls showInteractive={false} />
       </ReactFlow>
