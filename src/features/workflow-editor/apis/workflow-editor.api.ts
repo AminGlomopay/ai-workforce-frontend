@@ -12,7 +12,7 @@ const throwWorkflowError = async (response: Response, request: string): Promise<
   if (body.errorCode === 'WORKFLOW_VERSION_CONFLICT') throw new WorkflowConflictError();
   if (body.errorCode === 'INVALID_WORKFLOW_GRAPH') throw new InvalidWorkflowError(body.errors);
   if (body.errorCode === 'WORKFLOW_HAS_ISSUES') throw new WorkflowHasIssuesError(body.errors);
-  if (body.errorCode === 'WORKFLOW_VERSION_NOT_FOUND') throw new Error('This version no longer exists. Reload the workflow and run it again.');
+  if (body.errorCode === 'WORKFLOW_VERSION_NOT_FOUND') throw new Error('This version no longer exists. Reload the workflow and try again.');
   throw new Error(`${request} failed with ${response.status}`);
 };
 
@@ -39,6 +39,25 @@ export const saveWorkflow = async (workflowId: string, input: SaveWorkflowInput)
     );
   }
   if (!response.ok) await throwWorkflowError(response, `PATCH ${url}`);
+  return response.json();
+};
+
+export const publishWorkflow = async (workflowId: string, versionId: string): Promise<Workflow> => {
+  const url = WORKFLOW_EDITOR_ENDPOINTS.PUBLISH(workflowId);
+  const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ versionId }),
+  });
+  if (!response.ok) await throwWorkflowError(response, `POST ${url}`);
+  return response.json();
+};
+
+export const deactivateWorkflow = async (workflowId: string): Promise<Workflow> => {
+  const url = WORKFLOW_EDITOR_ENDPOINTS.DEACTIVATE(workflowId);
+  const response = await fetch(url, { method: 'POST', credentials: 'include' });
+  if (!response.ok) await throwWorkflowError(response, `POST ${url}`);
   return response.json();
 };
 

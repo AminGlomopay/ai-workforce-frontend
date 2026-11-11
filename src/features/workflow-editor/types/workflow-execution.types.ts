@@ -8,7 +8,7 @@ export interface WorkflowExecution {
   id: string;
   workflowId: string;
   workflowVersionId: string;
-  mode: 'MANUAL';
+  mode: 'MANUAL' | 'APPLICATION_EVENT';
   status: ExecutionStatus;
   triggerNodeId: string;
   error: { nodeId: string; message: string } | null;

@@ -9,18 +9,21 @@ import { isIssueForNode } from '../utils/run-issues';
 
 import { Button } from '@/shared/components/ui/button';
 
-interface RunErrorPanelProps {
+interface IssuesErrorPanelProps {
   error: Error;
+  blockedTitle: string;
+  failedTitle: string;
   onDismiss: () => void;
 }
 
-export const RunErrorPanel: FC<RunErrorPanelProps> = ({ error, onDismiss }) => {
+// Run and publish both answer WORKFLOW_HAS_ISSUES with every readiness issue at once.
+export const IssuesErrorPanel: FC<IssuesErrorPanelProps> = ({ error, blockedTitle, failedTitle, onDismiss }) => {
   const { getNodes } = useReactFlow<CanvasNode>();
   const focusNode = useFocusNode();
   const messages = error instanceof WorkflowHasIssuesError ? error.messages : [error.message];
 
   return (
-    <EditorAlert title={error instanceof WorkflowHasIssuesError ? 'Run blocked' : 'Run not started'}>
+    <EditorAlert title={error instanceof WorkflowHasIssuesError ? blockedTitle : failedTitle}>
       <ul className='flex flex-col gap-1.5 text-xs leading-snug'>
         {messages.map((message) => {
           const node = getNodes().find(({ data }) => isIssueForNode(message, data.name));

@@ -17,7 +17,7 @@ export const WorkflowListItem: FC<WorkflowListItemProps> = ({ workflow }) => (
     <div className='flex flex-1 flex-col gap-1'>
       <span className='text-sm font-medium'>{workflow.name}</span>
       <span className='text-muted-foreground font-mono text-[10px] tracking-widest uppercase'>
-        {workflow.activeVersionId ? 'Active' : 'Inactive'} · v{workflow.latestVersion} · Updated{' '}
+        {workflow.activeVersionId ? 'Published' : 'Not published'} · v{workflow.latestVersion} · Updated{' '}
         {new Date(workflow.updatedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
       </span>
     </div>

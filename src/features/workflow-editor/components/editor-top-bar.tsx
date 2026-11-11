@@ -1,16 +1,20 @@
 import { FC } from 'react';
 import { toast } from 'sonner';
 
+import { DeactivateWorkflowDialog } from './deactivate-workflow-dialog';
 import { EditorTitle } from './editor-title';
+import { IssuesErrorPanel } from './issues-error-panel';
 import { ProgressScanLine } from './progress-scan-line';
+import { PublishButton } from './publish-button';
+import { PublishStatus } from './publish-status';
 import { RunButton } from './run-button';
-import { RunErrorPanel } from './run-error-panel';
 import { SaveButton } from './save-button';
 import { SavedToast } from './saved-toast';
 import { SaveErrorPanel } from './save-error-panel';
 import { SaveStatus } from './save-status';
 import { SAVED_TOAST_DURATION } from '../constants/workflow-editor.constants';
 import { useHasUnsavedChanges } from '../hooks/use-has-unsaved-changes';
+import { usePublishWorkflow } from '../hooks/use-publish-workflow';
 import { useSaveShortcut } from '../hooks/use-save-shortcut';
 import { useSaveWorkflow } from '../hooks/use-save-workflow';
 import { useStartExecution } from '../hooks/use-start-execution';
@@ -19,6 +23,9 @@ import { useWorkflowGraph } from '../hooks/use-workflow-graph';
 import { useWorkflowRun } from '../hooks/use-workflow-run';
 import { Workflow } from '../types/workflow-editor.types';
 import { isExecutionFinished } from '../utils/execution-status';
+import { runsOnlyOnZohoDeskEvents } from '../utils/trigger-nodes';
+
+const EVENT_ONLY_RUN_REASON = 'This workflow runs on Zoho Desk events. Publish it, or add a Manual Trigger to test it from the editor.';
 
 interface EditorTopBarProps {
   workflowId: string;
@@ -30,9 +37,12 @@ export const EditorTopBar: FC<EditorTopBarProps> = ({ workflowId }) => {
   const hasUnsavedChanges = useHasUnsavedChanges(workflowId, graph);
   const { mutate: save, isPending, error, reset } = useSaveWorkflow(workflowId);
   const { mutate: startRun, isPending: isStarting, error: runError, reset: resetRun } = useStartExecution(workflowId);
+  const { mutate: publish, isPending: isPublishing, error: publishError, reset: resetPublish } = usePublishWorkflow(workflowId);
   const { execution, setIssues } = useWorkflowRun();
   const isRunning = isStarting || (execution !== undefined && !isExecutionFinished(execution.status));
+  const isEventOnly = runsOnlyOnZohoDeskEvents(graph.nodes);
   const canSave = hasUnsavedChanges && !isPending;
+  const canPublish = !isPending && !isPublishing && (hasUnsavedChanges || workflow.activeVersionId !== workflow.version.id);
 
   const saveGraph = (onSaved?: (saved: Workflow) => void) =>
     save(
@@ -45,12 +55,22 @@ export const EditorTopBar: FC<EditorTopBarProps> = ({ workflowId }) => {
       },
     );
 
-  // Runs execute a saved version, so pending changes are saved first.
-  const runGraph = () => (hasUnsavedChanges ? saveGraph((saved) => startRun(saved.version.id)) : startRun(workflow.version.id));
-
   const dismissRunError = () => {
     resetRun();
     setIssues([]);
+  };
+
+  // Runs and publishes act on a saved version, so pending changes are saved first.
+  const runGraph = () => {
+    resetPublish();
+    if (hasUnsavedChanges) saveGraph((saved) => startRun(saved.version.id));
+    else startRun(workflow.version.id);
+  };
+
+  const publishGraph = () => {
+    dismissRunError();
+    if (hasUnsavedChanges) saveGraph((saved) => publish(saved.version.id));
+    else publish(workflow.version.id);
   };
 
   useSaveShortcut(() => {
@@ -61,13 +81,22 @@ export const EditorTopBar: FC<EditorTopBarProps> = ({ workflowId }) => {
     <header className='animate-in fade-in slide-in-from-top-2 fill-mode-both relative z-10 flex items-center gap-6 border-b px-6 py-3 duration-500'>
       <EditorTitle name={workflow.name} />
       <SaveStatus key={workflow.version.number} isSaving={isPending} hasUnsavedChanges={hasUnsavedChanges} versionNumber={workflow.version.number} />
+      <PublishStatus activeVersionId={workflow.activeVersionId} versionId={workflow.version.id} />
       <div className='flex items-center gap-2'>
-        <RunButton disabled={isPending || isRunning} isRunning={isRunning} onClick={runGraph} />
+        {workflow.activeVersionId && <DeactivateWorkflowDialog workflowId={workflowId} workflowName={workflow.name} />}
+        <RunButton
+          disabled={isPending || isRunning || isEventOnly}
+          disabledReason={isEventOnly ? EVENT_ONLY_RUN_REASON : undefined}
+          isRunning={isRunning}
+          onClick={runGraph}
+        />
+        <PublishButton disabled={!canPublish} isPublishing={isPublishing} onClick={publishGraph} />
         <SaveButton disabled={!canSave} isSaving={isPending} onClick={() => saveGraph()} />
       </div>
-      {(isPending || isStarting) && <ProgressScanLine />}
+      {(isPending || isStarting || isPublishing) && <ProgressScanLine />}
       {error && <SaveErrorPanel workflowId={workflowId} error={error} onReloaded={reset} />}
-      {runError && <RunErrorPanel error={runError} onDismiss={dismissRunError} />}
+      {runError && <IssuesErrorPanel error={runError} blockedTitle='Run blocked' failedTitle='Run not started' onDismiss={dismissRunError} />}
+      {publishError && <IssuesErrorPanel error={publishError} blockedTitle='Publish blocked' failedTitle='Not published' onDismiss={resetPublish} />}
     </header>
   );
 };

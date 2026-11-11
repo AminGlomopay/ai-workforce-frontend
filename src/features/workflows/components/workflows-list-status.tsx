@@ -12,6 +12,6 @@ export const WorkflowsListStatus: FC<WorkflowsListStatusProps> = ({ workflows })
       <span className='bg-primary-soft size-1.5 rounded-full' />
       {workflows.length} {workflows.length === 1 ? 'workflow' : 'workflows'}
     </span>
-    <span>{workflows.filter((workflow) => workflow.activeVersionId).length} active</span>
+    <span>{workflows.filter((workflow) => workflow.activeVersionId).length} published</span>
   </div>
 );

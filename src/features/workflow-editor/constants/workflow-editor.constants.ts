@@ -5,6 +5,8 @@ import { BACKEND_URL } from '@/shared/constants/backend.constants';
 
 export const WORKFLOW_EDITOR_ENDPOINTS = {
   WORKFLOW: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}`,
+  PUBLISH: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/publish`,
+  DEACTIVATE: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/deactivate`,
   NODE_TYPES: `${BACKEND_URL}/workflow-node-types`,
   EXECUTIONS: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/executions`,
   EXECUTION: (executionId: string) => `${BACKEND_URL}/workflow-executions/${executionId}`,
@@ -43,3 +45,8 @@ export const FINISHED_EXECUTION_STATUSES: ExecutionStatus[] = ['SUCCEEDED', 'FAI
 export const ITERATING_NODE_TYPES = ['loop'];
 
 export const LOOP_BODY_OUTPUT = '0';
+
+// Runs from the editor start at the Manual Trigger; event triggers only start published versions.
+export const MANUAL_TRIGGER_TYPE = 'manualTrigger';
+
+export const ZOHO_DESK_TRIGGER_TYPE = 'zohoDeskTrigger';

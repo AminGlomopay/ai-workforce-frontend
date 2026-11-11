@@ -86,6 +86,7 @@ export interface Workflow {
   id: string;
   name: string;
   latestVersion: number;
+  activeVersionId: string | null;
   version: WorkflowVersion;
 }
 

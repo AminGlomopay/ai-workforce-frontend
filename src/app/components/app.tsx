@@ -4,6 +4,7 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 
 import { routeTree } from '@/routeTree.gen';
 import { Toaster } from '@/shared/components/ui/sonner';
+import { TooltipProvider } from '@/shared/components/ui/tooltip';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ declare module '@tanstack/react-router' {
 
 export const App: FC = () => (
   <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
+    <TooltipProvider>
+      <RouterProvider router={router} />
+    </TooltipProvider>
     <Toaster position='bottom-center' />
   </QueryClientProvider>
 );
