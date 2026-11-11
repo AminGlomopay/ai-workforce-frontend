@@ -52,7 +52,6 @@ export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs, o
           {run.error.message}
         </p>
       )}
-      <JsonBlock label='Input' value={run.input} />
       {outputs.map((port, portIndex) => {
         const label = port.name ? `Output · ${port.name}` : 'Output';
         const data = run.output?.[portIndex];

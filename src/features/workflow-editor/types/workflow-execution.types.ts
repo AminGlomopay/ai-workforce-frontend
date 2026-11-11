@@ -33,6 +33,5 @@ export interface WorkflowExecutionDetail extends WorkflowExecution {
 }
 
 export interface NodeRunDetail extends NodeRun {
-  input: NodeData;
   output: (NodeData | null)[] | null;
 }
