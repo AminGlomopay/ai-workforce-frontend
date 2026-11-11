@@ -50,3 +50,6 @@ export const LOOP_BODY_OUTPUT = '0';
 export const MANUAL_TRIGGER_TYPE = 'manualTrigger';
 
 export const ZOHO_DESK_TRIGGER_TYPE = 'zohoDeskTrigger';
+
+// Matches the backend's save DTO: z.string().trim().min(1).max(128).
+export const NODE_NAME_MAX_LENGTH = 128;

@@ -1,5 +1,6 @@
 import { FC, Suspense } from 'react';
 
+import { NodeNameInput } from './node-name-input';
 import { NodeParametersForm } from './node-parameters-form';
 import { NodeRunData } from './node-run-data';
 import { NodeRunIssues } from './node-run-issues';
@@ -34,7 +35,7 @@ export const KnownNodeSettings: FC<KnownNodeSettingsProps> = ({ node, nodeType }
     <>
       <NodeSettingsHeader
         icon={<NodeTypeIcon icon={nodeType.icon} className='text-primary-soft size-5' />}
-        name={node.data.name}
+        title={<NodeNameInput node={node} />}
         typeLabel={`${nodeType.displayName} · v${nodeType.version}`}
         status={
           <>

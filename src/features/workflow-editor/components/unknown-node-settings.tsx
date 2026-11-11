@@ -12,7 +12,7 @@ export const UnknownNodeSettings: FC<UnknownNodeSettingsProps> = ({ node }) => (
   <>
     <NodeSettingsHeader
       icon={<CircleHelp className='text-muted-foreground size-5' />}
-      name={node.data.name}
+      title={<span className='truncate text-sm font-semibold tracking-tight'>{node.data.name}</span>}
       typeLabel={`Unknown node · ${node.data.type}@${node.data.typeVersion}`}
       status='Read-only · saved as loaded'
     />

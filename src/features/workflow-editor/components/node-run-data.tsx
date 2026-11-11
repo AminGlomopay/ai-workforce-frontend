@@ -48,7 +48,7 @@ export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs, o
         {durationMs !== null && ` · ${durationMs} ms`}
       </span>
       {run.error && (
-        <p className='text-destructive border-destructive/40 bg-destructive/5 rounded-lg border p-3 text-xs leading-snug wrap-break-word'>
+        <p className='text-destructive border-destructive/40 bg-destructive/5 rounded-lg border p-3 text-xs leading-snug wrap-break-word whitespace-pre-wrap'>
           {run.error.message}
         </p>
       )}
