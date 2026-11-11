@@ -66,6 +66,7 @@ export const RunBar: FC = () => {
         <Button
           variant='link'
           className='text-foreground hover:text-primary-soft h-auto min-w-0 truncate p-0 text-xs font-normal'
+          title={error.message}
           onClick={() => failedNode && focusNode(failedNode.id)}>
           {failedNode && `${failedNode.data.name}: `}
           {error.message}

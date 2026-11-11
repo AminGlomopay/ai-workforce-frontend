@@ -48,17 +48,17 @@ export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs, o
         {durationMs !== null && ` · ${durationMs} ms`}
       </span>
       {run.error && (
-        <p className='text-destructive border-destructive/40 bg-destructive/5 rounded-lg border p-3 text-xs leading-snug'>{run.error.message}</p>
+        <p className='text-destructive border-destructive/40 bg-destructive/5 rounded-lg border p-3 text-xs leading-snug wrap-break-word'>
+          {run.error.message}
+        </p>
       )}
       <JsonBlock label='Input' value={run.input} />
       {outputs.map((port, portIndex) => {
         const label = port.name ? `Output · ${port.name}` : 'Output';
         const data = run.output?.[portIndex];
-        return data ? (
-          <JsonBlock key={portIndex} label={label} value={data} />
-        ) : (
-          <EmptyOutput key={portIndex} label={label} message={run.output ? 'Did not fire' : 'No output'} />
-        );
+        if (data) return <JsonBlock key={portIndex} label={label} value={data} />;
+        const message = run.status === 'RUNNING' ? 'Waiting for output' : run.output ? 'Did not fire' : 'No output';
+        return <EmptyOutput key={portIndex} label={label} message={message} />;
       })}
     </div>
   );
