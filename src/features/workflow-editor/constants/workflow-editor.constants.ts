@@ -5,7 +5,7 @@ import { BACKEND_URL } from '@/shared/constants/backend.constants';
 
 export const WORKFLOW_EDITOR_ENDPOINTS = {
   WORKFLOW: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}`,
-  PUBLISH: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/publish`,
+  ACTIVATE: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/activate`,
   DEACTIVATE: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/deactivate`,
   NODE_TYPES: `${BACKEND_URL}/workflow-node-types`,
   EXECUTIONS: (workflowId: string) => `${BACKEND_URL}/workflows/${workflowId}/executions`,
@@ -48,8 +48,6 @@ export const LOOP_BODY_OUTPUT = '0';
 
 // Runs from the editor start at the Manual Trigger; event triggers only start published versions.
 export const MANUAL_TRIGGER_TYPE = 'manualTrigger';
-
-export const ZOHO_DESK_TRIGGER_TYPE = 'zohoDeskTrigger';
 
 // Matches the backend's save DTO: z.string().trim().min(1).max(128).
 export const NODE_NAME_MAX_LENGTH = 128;

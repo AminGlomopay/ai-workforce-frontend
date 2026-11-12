@@ -43,7 +43,7 @@ export const saveWorkflow = async (workflowId: string, input: SaveWorkflowInput)
 };
 
 export const publishWorkflow = async (workflowId: string, versionId: string): Promise<Workflow> => {
-  const url = WORKFLOW_EDITOR_ENDPOINTS.PUBLISH(workflowId);
+  const url = WORKFLOW_EDITOR_ENDPOINTS.ACTIVATE(workflowId);
   const response = await fetch(url, {
     method: 'POST',
     credentials: 'include',

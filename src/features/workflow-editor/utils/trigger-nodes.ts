@@ -1,5 +1,9 @@
-import { MANUAL_TRIGGER_TYPE, ZOHO_DESK_TRIGGER_TYPE } from '../constants/workflow-editor.constants';
-import { WorkflowNode } from '../types/workflow-editor.types';
+import { MANUAL_TRIGGER_TYPE } from '../constants/workflow-editor.constants';
+import { WorkflowNode, WorkflowNodeType } from '../types/workflow-editor.types';
 
-export const runsOnlyOnZohoDeskEvents = (nodes: WorkflowNode[]): boolean =>
-  nodes.some(({ type }) => type === ZOHO_DESK_TRIGGER_TYPE) && !nodes.some(({ type }) => type === MANUAL_TRIGGER_TYPE);
+const isEventTrigger = (nodeTypes: WorkflowNodeType[], { type, typeVersion }: WorkflowNode): boolean =>
+  type !== MANUAL_TRIGGER_TYPE &&
+  nodeTypes.some((nodeType) => nodeType.type === type && nodeType.version === typeVersion && nodeType.group === 'trigger');
+
+export const runsOnlyOnEvents = (nodes: WorkflowNode[], nodeTypes: WorkflowNodeType[]): boolean =>
+  nodes.some((node) => isEventTrigger(nodeTypes, node)) && !nodes.some(({ type }) => type === MANUAL_TRIGGER_TYPE);

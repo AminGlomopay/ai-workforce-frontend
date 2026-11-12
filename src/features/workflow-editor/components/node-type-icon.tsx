@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Box } from 'lucide-react';
 import { DynamicIcon, IconName, iconNames } from 'lucide-react/dynamic';
 
+import { GitHubIcon } from './github-icon';
 import { LibreChatIcon } from './librechat-icon';
 import { SlackIcon } from './slack-icon';
 import { ZohoDeskIcon } from './zoho-desk-icon';
@@ -11,6 +12,7 @@ const BRAND_ICONS: Record<string, FC<{ className: string }>> = {
   slack: SlackIcon,
   librechat: LibreChatIcon,
   'zoho-desk': ZohoDeskIcon,
+  github: GitHubIcon,
 };
 
 interface NodeTypeIconProps {
