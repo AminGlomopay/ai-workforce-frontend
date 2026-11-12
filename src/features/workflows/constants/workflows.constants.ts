@@ -3,10 +3,10 @@ import { Circle, Diamond, Plus, Square, Triangle } from 'lucide-react';
 import { BACKEND_URL } from '@/shared/constants/backend.constants';
 
 export const PIPELINE_STEPS = [
-  { title: 'Pick a trigger', description: 'Any event can start a workflow.' },
-  { title: 'Add nodes', description: 'Apps, logic and AI, dropped on the canvas.' },
-  { title: 'Wire them up', description: 'Edges carry data from node to node.' },
-  { title: 'Switch it on', description: 'It runs on every matching event.' },
+  { title: 'Pick a trigger', description: 'An app event or a manual run starts it.' },
+  { title: 'Add nodes', description: 'Actions, branches and loops, dropped on the canvas.' },
+  { title: 'Connect them', description: 'Each node reads the output of the nodes before it.' },
+  { title: 'Run, then publish', description: 'Test it from the editor, then let events run it.' },
 ];
 
 export const DIAGRAM_CENTER_Y = 135;

@@ -11,7 +11,7 @@ export const NoWorkflowsMessage: FC = () => (
       No <span className='from-foreground to-primary-soft bg-linear-to-r bg-clip-text text-transparent'>workflows yet</span>
     </h2>
     <p className='text-muted-foreground mt-4 max-w-md text-sm leading-relaxed'>
-      Drop a trigger on the canvas, wire nodes to it, and switch the workflow on. Every matching event runs the whole graph.
+      Drop a trigger on the canvas, connect actions to it and publish. Every matching event then runs the whole workflow.
     </p>
     <CreateWorkflowDialog>
       <Button

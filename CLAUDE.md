@@ -1,6 +1,6 @@
 # ai-workforce-frontend
 
-Frontend for ai-workforce, Glomo's event-driven agents. React 19 SPA (no SSR) with Vite, TanStack Router (file-based), Tailwind v4 and shadcn (Radix base).
+Frontend for ai-workforce, Glomo's workflow builder: event-triggered workflows built on a canvas. React 19 SPA (no SSR) with Vite, TanStack Router (file-based), Tailwind v4 and shadcn (Radix base).
 
 ## Design language
 

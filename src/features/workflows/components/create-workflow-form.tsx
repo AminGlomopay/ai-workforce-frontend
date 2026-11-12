@@ -37,7 +37,7 @@ export const CreateWorkflowForm: FC = () => {
           required
           maxLength={WORKFLOW_NAME_MAX_LENGTH}
           autoFocus
-          placeholder='Sync new merchants'
+          placeholder='Tag new Zoho Desk tickets'
           aria-invalid={!!fieldErrors.name}
         />
         {fieldErrors.name && <p className='text-destructive text-xs'>{fieldErrors.name[0]}</p>}

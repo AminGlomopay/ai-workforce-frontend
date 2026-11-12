@@ -38,7 +38,7 @@ export const DeactivateWorkflowDialog: FC<DeactivateWorkflowDialogProps> = ({ wo
           <span className='text-destructive font-mono text-[10px] tracking-widest uppercase'>Deactivate workflow</span>
           <DialogTitle>Stop {workflowName}?</DialogTitle>
           <DialogDescription>
-            It stops running on new Zoho Desk events. Its saved versions stay, and you can publish again at any time.
+            It stops running on new events from its trigger. Its saved versions stay, and you can publish again at any time.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
