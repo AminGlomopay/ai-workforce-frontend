@@ -2,7 +2,6 @@ import { useQueries } from '@tanstack/react-query';
 
 import { nodeRunsQueryOptions } from '../apis/workflow-editor.queries';
 import { NodeRun, NodeRunDetail } from '../types/workflow-execution.types';
-import { countFinishedRuns } from '../utils/execution-status';
 
 const toFiredPorts = (nodeRuns: NodeRunDetail[]): string[] =>
   nodeRuns.flatMap(({ nodeId, output }) => (output ?? []).flatMap((data, port) => (data ? [`${nodeId}:${port}`] : [])));
@@ -11,7 +10,7 @@ const toFiredPorts = (nodeRuns: NodeRunDetail[]): string[] =>
 export const useFiredPorts = (executionId: string | null, runsByNode: Map<string, NodeRun[]>, isFinished: boolean) =>
   useQueries({
     queries: [...runsByNode].map(([nodeId, runs]) => ({
-      ...nodeRunsQueryOptions(executionId ?? '', nodeId, countFinishedRuns(runs)),
+      ...nodeRunsQueryOptions(executionId ?? '', nodeId, runs),
       enabled: isFinished,
     })),
     combine: (results) =>

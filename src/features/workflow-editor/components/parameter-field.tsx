@@ -33,6 +33,9 @@ export const ParameterField: FC<ParameterFieldProps> = ({ id, path, label, descr
       {children}
       {description && <p className='text-muted-foreground text-xs leading-snug'>{description}</p>}
       {isRequired && !value && <p className='text-destructive font-mono text-[10px] tracking-widest uppercase'>Required · draft still saves</p>}
+      {property.type === 'string' && property.noDataExpression && value.startsWith('=') && (
+        <p className='text-destructive font-mono text-[10px] tracking-widest uppercase'>Must be a fixed value, not a lookup</p>
+      )}
     </div>
   );
 };

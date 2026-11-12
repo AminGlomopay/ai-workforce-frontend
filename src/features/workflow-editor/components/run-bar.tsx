@@ -9,7 +9,7 @@ import { useRunBarAutoHide } from '../hooks/use-run-bar-auto-hide';
 import { useWorkflowRun } from '../hooks/use-workflow-run';
 import { CanvasNode } from '../types/workflow-editor.types';
 import { ExecutionStatus } from '../types/workflow-execution.types';
-import { isExecutionFinished } from '../utils/execution-status';
+import { isExecutionBusy, isExecutionFinished } from '../utils/execution-status';
 
 import { Button } from '@/shared/components/ui/button';
 import { useExitAnimation } from '@/shared/hooks/use-exit-animation';
@@ -18,6 +18,7 @@ import { cn } from '@/shared/utils/cn';
 const STATUS_LABELS: Record<ExecutionStatus, string> = {
   QUEUED: 'Run queued',
   RUNNING: 'Running',
+  WAITING: 'Run paused · waiting',
   SUCCEEDED: 'Run succeeded',
   FAILED: 'Run failed',
   CRASHED: 'Run crashed',
@@ -26,6 +27,7 @@ const STATUS_LABELS: Record<ExecutionStatus, string> = {
 const STATUS_DOTS: Record<ExecutionStatus, string> = {
   QUEUED: 'bg-primary-soft animate-pulse',
   RUNNING: 'bg-primary-soft animate-pulse',
+  WAITING: 'bg-primary-soft animate-breathe shadow-[0_0_8px_var(--primary-soft)]',
   SUCCEEDED: 'bg-primary-soft shadow-[0_0_8px_var(--primary-soft)]',
   FAILED: 'bg-destructive',
   CRASHED: 'bg-destructive',
@@ -75,7 +77,7 @@ export const RunBar: FC = () => {
       <Button variant='ghost' size='icon-xs' aria-label='Clear run' disabled={!isFinished} onClick={() => setExecutionId(null)}>
         <X />
       </Button>
-      {!isFinished && <ProgressScanLine />}
+      {isExecutionBusy(status) && <ProgressScanLine />}
       {isCountingDown && !isExiting && (
         <span
           className='from-primary to-primary-soft animate-drain absolute inset-x-6 bottom-0 h-px origin-left bg-linear-to-r'

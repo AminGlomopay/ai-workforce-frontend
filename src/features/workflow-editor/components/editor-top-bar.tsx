@@ -23,7 +23,7 @@ import { useWorkflowGraph } from '../hooks/use-workflow-graph';
 import { useWorkflowNodeTypes } from '../hooks/use-workflow-node-types';
 import { useWorkflowRun } from '../hooks/use-workflow-run';
 import { Workflow } from '../types/workflow-editor.types';
-import { isExecutionFinished } from '../utils/execution-status';
+import { isExecutionBusy } from '../utils/execution-status';
 import { runsOnlyOnEvents } from '../utils/trigger-nodes';
 
 const EVENT_ONLY_RUN_REASON = 'This workflow runs on events from its trigger. Publish it, or add a Manual Trigger to test it from the editor.';
@@ -41,7 +41,7 @@ export const EditorTopBar: FC<EditorTopBarProps> = ({ workflowId }) => {
   const { mutate: startRun, isPending: isStarting, error: runError, reset: resetRun } = useStartExecution(workflowId);
   const { mutate: publish, isPending: isPublishing, error: publishError, reset: resetPublish } = usePublishWorkflow(workflowId);
   const { execution, setIssues } = useWorkflowRun();
-  const isRunning = isStarting || (execution !== undefined && !isExecutionFinished(execution.status));
+  const isRunning = isStarting || (execution !== undefined && isExecutionBusy(execution.status));
   const isEventOnly = runsOnlyOnEvents(graph.nodes, nodeTypes);
   const canSave = hasUnsavedChanges && !isPending;
   const canPublish = !isPending && !isPublishing && (hasUnsavedChanges || workflow.activeVersionId !== workflow.version.id);

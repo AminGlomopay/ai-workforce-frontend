@@ -1,6 +1,6 @@
-export type ExecutionStatus = 'QUEUED' | 'RUNNING' | 'SUCCEEDED' | 'FAILED' | 'CRASHED';
+export type ExecutionStatus = 'QUEUED' | 'RUNNING' | 'WAITING' | 'SUCCEEDED' | 'FAILED' | 'CRASHED';
 
-export type NodeRunStatus = 'RUNNING' | 'SUCCEEDED' | 'FAILED';
+export type NodeRunStatus = 'RUNNING' | 'WAITING' | 'SUCCEEDED' | 'FAILED';
 
 export type NodeData = Record<string, unknown>;
 

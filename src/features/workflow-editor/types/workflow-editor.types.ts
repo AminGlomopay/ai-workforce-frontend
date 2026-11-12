@@ -30,6 +30,7 @@ interface BaseNodeProperty {
 export interface StringNodeProperty extends BaseNodeProperty {
   type: 'string';
   placeholder?: string;
+  noDataExpression?: boolean;
   typeOptions?: { rows?: number };
 }
 

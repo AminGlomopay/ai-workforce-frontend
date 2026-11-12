@@ -17,7 +17,14 @@ export const WORKFLOW_EDITOR_QUERY_KEYS = {
   WORKFLOW: (workflowId: string) => ['workflows', 'detail', workflowId],
   NODE_TYPES: ['workflow-node-types'],
   EXECUTION: (executionId: string) => ['workflow-executions', executionId],
-  NODE_RUNS: (executionId: string, nodeId: string, finishedRuns: number) => ['workflow-executions', executionId, 'node-runs', nodeId, finishedRuns],
+  NODE_RUNS: (executionId: string, nodeId: string, finishedRuns: number, isWaiting: boolean) => [
+    'workflow-executions',
+    executionId,
+    'node-runs',
+    nodeId,
+    finishedRuns,
+    isWaiting,
+  ],
 };
 
 export const NODE_GROUP_LABELS: Record<WorkflowNodeGroup, string> = {
@@ -37,6 +44,8 @@ export const SAVED_TOAST_DURATION = 4500;
 export const RUN_BAR_AUTO_HIDE_DELAY = 5000;
 
 export const EXECUTION_POLL_INTERVAL = 1000;
+
+export const WAITING_EXECUTION_POLL_INTERVAL = 10000;
 
 export const FINISHED_EXECUTION_STATUSES: ExecutionStatus[] = ['SUCCEEDED', 'FAILED', 'CRASHED'];
 
