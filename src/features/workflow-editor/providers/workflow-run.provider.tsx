@@ -3,8 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { executionQueryOptions } from '../apis/workflow-editor.queries';
 import { WorkflowRunContext } from '../contexts/workflow-run.context';
-import { useFiredPorts } from '../hooks/use-fired-ports';
-import { groupRunsByNode, isExecutionFinished } from '../utils/execution-status';
+import { groupRunsByNode } from '../utils/execution-status';
 
 interface WorkflowRunProviderProps {
   children: ReactNode;
@@ -16,11 +15,10 @@ export const WorkflowRunProvider: FC<WorkflowRunProviderProps> = ({ children }) 
   const [issues, setIssues] = useState<string[]>([]);
   const { data: execution } = useQuery({ ...executionQueryOptions(executionId ?? ''), enabled: executionId !== null });
   const runsByNode = useMemo(() => groupRunsByNode(execution?.nodeRuns ?? []), [execution]);
-  const firedPorts = useFiredPorts(executionId, runsByNode, execution !== undefined && isExecutionFinished(execution.status));
 
   const workflowRun = useMemo(
-    () => ({ executionId, setExecutionId, issues, setIssues, execution, runsByNode, firedPorts }),
-    [executionId, issues, execution, runsByNode, firedPorts],
+    () => ({ executionId, setExecutionId, issues, setIssues, execution, runsByNode }),
+    [executionId, issues, execution, runsByNode],
   );
 
   return <WorkflowRunContext value={workflowRun}>{children}</WorkflowRunContext>;

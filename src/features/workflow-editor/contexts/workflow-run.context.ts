@@ -9,7 +9,6 @@ export interface WorkflowRun {
   setIssues: (issues: string[]) => void;
   execution?: WorkflowExecutionDetail;
   runsByNode: Map<string, NodeRun[]>;
-  firedPorts?: Set<string>;
 }
 
 export const WorkflowRunContext = createContext<WorkflowRun | null>(null);

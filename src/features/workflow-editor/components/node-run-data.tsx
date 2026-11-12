@@ -8,20 +8,26 @@ import { RunPicker } from './run-picker';
 import { nodeRunsQueryOptions } from '../apis/workflow-editor.queries';
 import { ITERATING_NODE_TYPES } from '../constants/workflow-editor.constants';
 import { useWorkflowRun } from '../hooks/use-workflow-run';
-import { CanvasNode, WorkflowPort } from '../types/workflow-editor.types';
-import { NodeRun } from '../types/workflow-execution.types';
+import { CanvasNode } from '../types/workflow-editor.types';
+import { NodeRun, NodeRunStatus } from '../types/workflow-execution.types';
 import { countLoopIterations } from '../utils/graph-rules';
 
 import { cn } from '@/shared/utils/cn';
+
+const EMPTY_OUTPUT_MESSAGES: Record<NodeRunStatus, string> = {
+  RUNNING: 'Waiting for output',
+  WAITING: 'Paused · resumes when the result arrives',
+  SUCCEEDED: 'No output',
+  FAILED: 'No output',
+};
 
 interface NodeRunDataProps {
   executionId: string;
   nodeId: string;
   runs: NodeRun[];
-  outputs: WorkflowPort[];
 }
 
-export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs, outputs }) => {
+export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs }) => {
   const nodeRuns = useSuspenseQuery(nodeRunsQueryOptions(executionId, nodeId, runs)).data;
   const loopIds = useNodes<CanvasNode>()
     .filter(({ data }) => ITERATING_NODE_TYPES.includes(data.type))
@@ -51,20 +57,7 @@ export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs, o
           {run.error.message}
         </p>
       )}
-      {outputs.map((port, portIndex) => {
-        const label = port.name ? `Output · ${port.name}` : 'Output';
-        const data = run.output?.[portIndex];
-        if (data) return <JsonBlock key={portIndex} label={label} value={data} />;
-        const message =
-          run.status === 'RUNNING'
-            ? 'Waiting for output'
-            : run.status === 'WAITING'
-              ? 'Paused · resumes when the result arrives'
-              : run.output
-                ? 'Did not fire'
-                : 'No output';
-        return <EmptyOutput key={portIndex} label={label} message={message} />;
-      })}
+      {run.output ? <JsonBlock label='Output' value={run.output} /> : <EmptyOutput label='Output' message={EMPTY_OUTPUT_MESSAGES[run.status]} />}
     </div>
   );
 };

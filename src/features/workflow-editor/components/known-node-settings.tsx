@@ -56,7 +56,7 @@ export const KnownNodeSettings: FC<KnownNodeSettingsProps> = ({ node, nodeType }
           <TabsContent value='run'>
             {runs ? (
               <Suspense fallback={<RunDataLoading />}>
-                <NodeRunData executionId={execution.id} nodeId={node.id} runs={runs} outputs={nodeType.outputs} />
+                <NodeRunData executionId={execution.id} nodeId={node.id} runs={runs} />
               </Suspense>
             ) : (
               <p className='text-muted-foreground font-mono text-[10px] tracking-widest uppercase'>No runs in this execution yet</p>
