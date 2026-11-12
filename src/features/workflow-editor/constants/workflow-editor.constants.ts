@@ -60,3 +60,17 @@ export const MANUAL_TRIGGER_TYPE = 'manualTrigger';
 
 // Matches the backend's save DTO: z.string().trim().min(1).max(128).
 export const NODE_NAME_MAX_LENGTH = 128;
+
+// Run output trees open their top-level lists and objects; deeper ones start collapsed behind a one-line preview.
+export const JSON_EXPANDED_DEPTH = 1;
+
+export const JSON_PREVIEW_ENTRIES = 4;
+
+export const JSON_PREVIEW_VALUE_MAX_CHARS = 32;
+
+// Name-like keys lead a collapsed object's preview, so a GitHub file reads as its filename rather than its sha.
+export const JSON_NAME_KEY_PATTERN = /name$/i;
+
+export const JSON_TEXT_MAX_LINES = 6;
+
+export const JSON_TEXT_MAX_CHARS = 400;
