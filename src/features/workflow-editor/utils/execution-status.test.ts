@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { countFinishedRuns, isExecutionBusy } from './execution-status';
+import { countFinishedRuns, isExecutionBusy, summarizeNodeRunStatus, totalRunDuration } from './execution-status';
 import { NodeRun, NodeRunStatus } from '../types/workflow-execution.types';
 
 const nodeRun = (status: NodeRunStatus, runIndex = 0): NodeRun => ({
@@ -34,5 +34,21 @@ describe('isExecutionBusy', () => {
     expect(isExecutionBusy('WAITING')).toBe(false);
     expect(isExecutionBusy('SUCCEEDED')).toBe(false);
     expect(isExecutionBusy('CRASHED')).toBe(false);
+  });
+});
+
+describe('summarizeNodeRunStatus', () => {
+  it('prefers running, then paused, then failed', () => {
+    expect(summarizeNodeRunStatus([nodeRun('SUCCEEDED'), nodeRun('FAILED'), nodeRun('WAITING')])).toBe('WAITING');
+    expect(summarizeNodeRunStatus([nodeRun('SUCCEEDED'), nodeRun('FAILED')])).toBe('FAILED');
+    expect(summarizeNodeRunStatus([nodeRun('SUCCEEDED')])).toBe('SUCCEEDED');
+  });
+});
+
+describe('totalRunDuration', () => {
+  it('adds up finished runs and skips unfinished ones', () => {
+    const finished = { ...nodeRun('SUCCEEDED', 0), startedAt: '2026-11-13T00:00:00.000Z', finishedAt: '2026-11-13T00:00:01.500Z' };
+    const again = { ...nodeRun('FAILED', 1), startedAt: '2026-11-13T00:00:02.000Z', finishedAt: '2026-11-13T00:00:02.250Z' };
+    expect(totalRunDuration([finished, again, nodeRun('RUNNING', 2)])).toBe(1750);
   });
 });

@@ -34,7 +34,12 @@ export const NodeRunData: FC<NodeRunDataProps> = ({ executionId, nodeId, runs })
     .map(({ id }) => id);
   const edges = useEdges();
   const { execution } = useWorkflowRun();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() =>
+    Math.max(
+      0,
+      nodeRuns.findIndex(({ status }) => status === 'FAILED'),
+    ),
+  );
   const run = nodeRuns.at(Math.min(index, nodeRuns.length - 1));
   if (!run) throw new Error(`No run details for node ${nodeId}`);
 

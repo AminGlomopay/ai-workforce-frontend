@@ -34,6 +34,7 @@ export const KnownNodeSettings: FC<KnownNodeSettingsProps> = ({ node, nodeType }
   return (
     <>
       <NodeSettingsHeader
+        eyebrow='Node settings'
         icon={<NodeTypeIcon icon={nodeType.icon} className='text-primary-soft size-5' />}
         title={<NodeNameInput node={node} />}
         typeLabel={`${nodeType.displayName} · v${nodeType.version}`}

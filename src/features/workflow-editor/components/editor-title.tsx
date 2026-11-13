@@ -9,7 +9,7 @@ interface EditorTitleProps {
 }
 
 export const EditorTitle: FC<EditorTitleProps> = ({ name }) => (
-  <div className='flex flex-1 items-center gap-3'>
+  <div className='flex items-center gap-3'>
     <Button asChild variant='ghost' size='icon-sm' aria-label='Back to workflows'>
       <Link to='/workflows'>
         <ArrowLeft />

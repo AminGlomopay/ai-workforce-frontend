@@ -167,6 +167,7 @@
   --animate-draw: draw 0.5s ease-out 0.2s both;
   --animate-drain: drain linear both;
   --animate-drawer-in: drawer-in 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+  --animate-grow-x: grow-x 0.7s cubic-bezier(0.32, 0.72, 0, 1) both;
   --animate-drawer-out: drawer-out 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 
   @keyframes scan {
@@ -253,6 +254,12 @@
   @keyframes drawer-out {
     to {
       width: 0;
+    }
+  }
+
+  @keyframes grow-x {
+    from {
+      transform: scaleX(0);
     }
   }
 

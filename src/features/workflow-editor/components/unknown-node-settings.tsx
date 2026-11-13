@@ -11,6 +11,7 @@ interface UnknownNodeSettingsProps {
 export const UnknownNodeSettings: FC<UnknownNodeSettingsProps> = ({ node }) => (
   <>
     <NodeSettingsHeader
+      eyebrow='Node settings'
       icon={<CircleHelp className='text-muted-foreground size-5' />}
       title={<span className='truncate text-sm font-semibold tracking-tight'>{node.data.name}</span>}
       typeLabel={`Unknown node · ${node.data.type}@${node.data.typeVersion}`}

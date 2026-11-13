@@ -44,7 +44,7 @@ export const RunBar: FC = () => {
   const { status, nodeRuns, startedAt, finishedAt, error } = execution;
   const isFinished = isExecutionFinished(status);
   const durationMs = startedAt && finishedAt ? Date.parse(finishedAt) - Date.parse(startedAt) : null;
-  const failedNode = error && getNode(error.nodeId);
+  const failedNode = error?.nodeId ? getNode(error.nodeId) : undefined;
 
   return (
     <div

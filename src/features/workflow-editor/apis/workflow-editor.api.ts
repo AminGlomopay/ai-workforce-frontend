@@ -1,10 +1,25 @@
 import { WORKFLOW_EDITOR_ENDPOINTS } from '../constants/workflow-editor.constants';
+import { ExecutionNotFoundError } from '../errors/execution-not-found.error';
 import { InvalidWorkflowError } from '../errors/invalid-workflow.error';
 import { WorkflowConflictError } from '../errors/workflow-conflict.error';
 import { WorkflowHasIssuesError } from '../errors/workflow-has-issues.error';
 import { WorkflowNotFoundError } from '../errors/workflow-not-found.error';
-import { SaveWorkflowInput, ValidationErrorResponse, Workflow, WorkflowErrorResponse, WorkflowNodeType } from '../types/workflow-editor.types';
-import { NodeRunDetail, WorkflowExecution, WorkflowExecutionDetail } from '../types/workflow-execution.types';
+import {
+  SaveWorkflowInput,
+  ValidationErrorResponse,
+  Workflow,
+  WorkflowErrorResponse,
+  WorkflowNodeType,
+  WorkflowVersion,
+} from '../types/workflow-editor.types';
+import {
+  ExecutionFilters,
+  NodeRunDetail,
+  WorkflowExecution,
+  WorkflowExecutionDetail,
+  WorkflowExecutionsPage,
+} from '../types/workflow-execution.types';
+import { toExecutionsSearchParams } from '../utils/execution-filters';
 
 const throwWorkflowError = async (response: Response, request: string): Promise<never> => {
   const body: WorkflowErrorResponse = await response.json();
@@ -80,10 +95,26 @@ export const startExecution = async (workflowId: string, versionId: string): Pro
   return response.json();
 };
 
+export const fetchExecutions = async (workflowId: string, filters: ExecutionFilters, cursor: string | null): Promise<WorkflowExecutionsPage> => {
+  const url = `${WORKFLOW_EDITOR_ENDPOINTS.EXECUTIONS(workflowId)}?${toExecutionsSearchParams(filters, cursor, Date.now())}`;
+  const response = await fetch(url, { credentials: 'include' });
+  if (!response.ok) await throwWorkflowError(response, `GET ${url}`);
+  return response.json();
+};
+
+// A malformed id fails validation with a 400, which is a missing run all the same.
 export const fetchExecution = async (executionId: string): Promise<WorkflowExecutionDetail> => {
   const url = WORKFLOW_EDITOR_ENDPOINTS.EXECUTION(executionId);
   const response = await fetch(url, { credentials: 'include' });
+  if (response.status === 400 || response.status === 404) throw new ExecutionNotFoundError();
   if (!response.ok) throw new Error(`GET ${url} failed with ${response.status}`);
+  return response.json();
+};
+
+export const fetchWorkflowVersion = async (workflowId: string, versionId: string): Promise<WorkflowVersion> => {
+  const url = WORKFLOW_EDITOR_ENDPOINTS.VERSION(workflowId, versionId);
+  const response = await fetch(url, { credentials: 'include' });
+  if (!response.ok) await throwWorkflowError(response, `GET ${url}`);
   return response.json();
 };
 

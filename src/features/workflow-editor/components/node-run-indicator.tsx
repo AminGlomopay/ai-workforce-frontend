@@ -3,6 +3,8 @@ import { Check, Hourglass, LoaderCircle, X } from 'lucide-react';
 
 import { useWorkflowRun } from '../hooks/use-workflow-run';
 import { NodeRunStatus } from '../types/workflow-execution.types';
+import { summarizeNodeRunStatus, totalRunDuration } from '../utils/execution-status';
+import { formatDuration } from '../utils/format-duration';
 
 import { cn } from '@/shared/utils/cn';
 
@@ -29,8 +31,7 @@ interface NodeRunIndicatorProps {
 export const NodeRunIndicator: FC<NodeRunIndicatorProps> = ({ nodeId }) => {
   const runs = useWorkflowRun().runsByNode.get(nodeId);
   if (!runs) return null;
-  const statuses = runs.map(({ status }) => status);
-  const status = (['RUNNING', 'WAITING', 'FAILED'] as const).find((candidate) => statuses.includes(candidate)) ?? 'SUCCEEDED';
+  const status = summarizeNodeRunStatus(runs);
   const Icon = STATUS_ICONS[status];
 
   return (
@@ -45,6 +46,7 @@ export const NodeRunIndicator: FC<NodeRunIndicatorProps> = ({ nodeId }) => {
         )}>
         <Icon className={cn('size-3', status === 'RUNNING' && 'animate-spin', status === 'WAITING' && 'animate-breathe')} />
         {runs.length > 1 && `×${runs.length}`}
+        {(status === 'SUCCEEDED' || status === 'FAILED') && <span className='text-muted-foreground'>{formatDuration(totalRunDuration(runs))}</span>}
       </span>
     </>
   );
