@@ -112,5 +112,6 @@ export interface PaletteEntry {
   key: string;
   label: string;
   description: string;
+  nodeName: string;
   parameters: NodeParameters;
 }

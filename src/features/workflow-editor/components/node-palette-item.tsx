@@ -20,7 +20,7 @@ export const NodePaletteItem: FC<NodePaletteItemProps> = ({ nodeType, entry }) =
   const onDragStart = (event: DragEvent) => {
     event.dataTransfer.setData(
       NODE_TYPE_DRAG_FORMAT,
-      JSON.stringify({ type: nodeType.type, version: nodeType.version, parameters: entry.parameters }),
+      JSON.stringify({ type: nodeType.type, version: nodeType.version, name: entry.nodeName, parameters: entry.parameters }),
     );
     event.dataTransfer.effectAllowed = 'copy';
   };

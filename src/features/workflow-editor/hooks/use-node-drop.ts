@@ -20,7 +20,7 @@ export const useNodeDrop = () => {
 
   const onDrop = (event: DragEvent) => {
     event.preventDefault();
-    const { type, version, parameters } = JSON.parse(event.dataTransfer.getData(NODE_TYPE_DRAG_FORMAT));
+    const { type, version, name, parameters } = JSON.parse(event.dataTransfer.getData(NODE_TYPE_DRAG_FORMAT));
     const nodeType = findNodeType(nodeTypes, type, version);
     const takenNames = new Set(getNodes().map((node) => node.data.name));
 
@@ -29,7 +29,7 @@ export const useNodeDrop = () => {
       type: 'workflowNode',
       position: screenToFlowPosition({ x: event.clientX, y: event.clientY }),
       data: {
-        name: uniqueNodeName(nodeType.defaults.name, takenNames),
+        name: uniqueNodeName(name, takenNames),
         type: nodeType.type,
         typeVersion: nodeType.version,
         parameters: withDefaultParameters(nodeType.properties, parameters),

@@ -30,7 +30,9 @@ describe('toPaletteActions', () => {
       ]),
     );
 
-    expect(actions).toEqual([{ key: 'example:send', label: 'Send a message', description: 'Example node', parameters: { operation: 'send' } }]);
+    expect(actions).toEqual([
+      { key: 'example:send', label: 'Send a message', description: 'Example node', nodeName: 'Send a message', parameters: { operation: 'send' } },
+    ]);
   });
 
   it('lists no actions when operations have no action labels', () => {

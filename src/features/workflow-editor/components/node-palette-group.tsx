@@ -28,7 +28,13 @@ export const NodePaletteGroup: FC<NodePaletteGroupProps> = ({ label, nodeTypes, 
           <NodePaletteItem
             key={`${nodeType.type}@${nodeType.version}`}
             nodeType={nodeType}
-            entry={{ key: nodeType.type, label: nodeType.displayName, description: nodeType.description, parameters: {} }}
+            entry={{
+              key: nodeType.type,
+              label: nodeType.displayName,
+              description: nodeType.description,
+              nodeName: nodeType.defaults.name,
+              parameters: {},
+            }}
           />
         );
       })}

@@ -14,6 +14,7 @@ export const toPaletteActions = (nodeType: WorkflowNodeType): PaletteEntry[] => 
             key: `${nodeType.type}:${option.value}`,
             label: option.action,
             description: option.description ?? nodeType.description,
+            nodeName: option.action,
             parameters: { [OPERATION_PROPERTY_NAME]: option.value },
           },
         ]
