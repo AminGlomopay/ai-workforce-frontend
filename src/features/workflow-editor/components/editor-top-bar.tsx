@@ -24,9 +24,9 @@ import { useWorkflowNodeTypes } from '../hooks/use-workflow-node-types';
 import { useWorkflowRun } from '../hooks/use-workflow-run';
 import { Workflow } from '../types/workflow-editor.types';
 import { isExecutionBusy } from '../utils/execution-status';
-import { runsOnlyOnEvents } from '../utils/trigger-nodes';
+import { runsOnlyAutomatically } from '../utils/trigger-nodes';
 
-const EVENT_ONLY_RUN_REASON = 'This workflow runs on events from its trigger. Publish it, or add a Manual Trigger to test it from the editor.';
+const AUTOMATIC_ONLY_RUN_REASON = 'This workflow runs from its trigger. Publish it, or add a Manual Trigger to test it from the editor.';
 
 interface EditorTopBarProps {
   workflowId: string;
@@ -42,7 +42,7 @@ export const EditorTopBar: FC<EditorTopBarProps> = ({ workflowId }) => {
   const { mutate: publish, isPending: isPublishing, error: publishError, reset: resetPublish } = usePublishWorkflow(workflowId);
   const { execution, setIssues } = useWorkflowRun();
   const isRunning = isStarting || (execution !== undefined && isExecutionBusy(execution.status));
-  const isEventOnly = runsOnlyOnEvents(graph.nodes, nodeTypes);
+  const isAutomaticOnly = runsOnlyAutomatically(graph.nodes, nodeTypes);
   const canSave = hasUnsavedChanges && !isPending;
   const canPublish = !isPending && !isPublishing && (hasUnsavedChanges || workflow.activeVersionId !== workflow.version.id);
 
@@ -87,8 +87,8 @@ export const EditorTopBar: FC<EditorTopBarProps> = ({ workflowId }) => {
       <div className='flex items-center gap-2'>
         {workflow.activeVersionId && <DeactivateWorkflowDialog workflowId={workflowId} workflowName={workflow.name} />}
         <RunButton
-          disabled={isPending || isRunning || isEventOnly}
-          disabledReason={isEventOnly ? EVENT_ONLY_RUN_REASON : undefined}
+          disabled={isPending || isRunning || isAutomaticOnly}
+          disabledReason={isAutomaticOnly ? AUTOMATIC_ONLY_RUN_REASON : undefined}
           isRunning={isRunning}
           onClick={runGraph}
         />
