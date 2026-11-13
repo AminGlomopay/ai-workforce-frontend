@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { toPaletteEntries } from './palette-entries';
+import { toPaletteActions } from './palette-actions';
 import { NodeProperty, WorkflowNodeType } from '../types/workflow-editor.types';
 
 const nodeType = (properties: NodeProperty[]): WorkflowNodeType => ({
@@ -16,9 +16,9 @@ const nodeType = (properties: NodeProperty[]): WorkflowNodeType => ({
   properties,
 });
 
-describe('toPaletteEntries', () => {
-  it('lists one entry per operation with an action', () => {
-    const entries = toPaletteEntries(
+describe('toPaletteActions', () => {
+  it('lists one action per operation with an action label', () => {
+    const actions = toPaletteActions(
       nodeType([
         {
           name: 'operation',
@@ -30,13 +30,11 @@ describe('toPaletteEntries', () => {
       ]),
     );
 
-    expect(entries).toEqual([
-      { key: 'example:send', label: 'Example: Send a message', description: 'Example node', parameters: { operation: 'send' } },
-    ]);
+    expect(actions).toEqual([{ key: 'example:send', label: 'Send a message', description: 'Example node', parameters: { operation: 'send' } }]);
   });
 
-  it('keeps a single entry when operations have no action labels', () => {
-    const entries = toPaletteEntries(
+  it('lists no actions when operations have no action labels', () => {
+    const actions = toPaletteActions(
       nodeType([
         {
           name: 'operation',
@@ -51,6 +49,6 @@ describe('toPaletteEntries', () => {
       ]),
     );
 
-    expect(entries).toEqual([{ key: 'example', label: 'Example', description: 'Example node', parameters: {} }]);
+    expect(actions).toEqual([]);
   });
 });
